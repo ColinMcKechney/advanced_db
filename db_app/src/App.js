@@ -1,38 +1,27 @@
-import React,{useState} from 'react';
-import './App.css';
+import "./App.css";
+import Login from "./components/Login";
+import CreateAccount from "./components/CreateAccount";
+
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 
 function App() {
-  const [data,setData] = useState({
-    username:"",
-    password:""
-  })
+
+
   
-  const {username,password} = data;
-  
-  const changeHandler = e => {
-    setData({...data,[e.target.name]:[e.target.value]});
-  }
-  
-  const submitHandler = e => {
-    e.preventDefault();
-    console.log(data);
-  }
-  
-    return (
-      <div>
-        <center>
-          <h1>Log In</h1>
-          <p>Log in to your account</p>
-        <form onSubmit={submitHandler}>
-        <input type="text" name="username" value={username} onChange={changeHandler}/><br/>
-        <input type="password" name="password" value={password} onChange={changeHandler}/><br/>
-        <input type="submit" name="submit"/>
-        </form>
-        <button>Create New Account</button>
-        </center>
-      </div>
-  
-    );
-  }
-  
-  export default App;
+  return (
+    <Router>
+      <Routes>
+        <Route path='/' element={<Login/>}></Route>
+        <Route path='/CreateAccount' element={<CreateAccount/>}></Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
