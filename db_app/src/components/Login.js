@@ -31,7 +31,9 @@ function Login() {
           <h1>Log In</h1>
           <p>Log in to your account</p>
         <form onSubmit={submitHandler}>
-        <input type="text" name="username" value={username} onChange={changeHandler}/><br/>
+        <p>Username:</p>
+        <input type="text" name="username" value={username} onChange={changeHandler}/>
+        <p>Password:</p>
         <input type="password" name="password" value={password} onChange={changeHandler}/><br/>
         <input type="submit" name="submit"/>
         </form>
