@@ -17,10 +17,12 @@ function App() {
     e.preventDefault();
     console.log(data);
   }
+  
     return (
       <div>
         <center>
           <h1>Log In</h1>
+          <p>Log in to your account</p>
         <form onSubmit={submitHandler}>
         <input type="text" name="username" value={username} onChange={changeHandler}/><br/>
         <input type="password" name="password" value={password} onChange={changeHandler}/><br/>
