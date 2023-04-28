@@ -36,9 +36,13 @@ pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Respond
     match authenticate(net_id, password) {
         Some(user) => {
             Identity::login(&request.extensions(), net_id.into());
-            web::Json(user)
+            web::Json(user);
+            HttpResponse::Ok()
         },
-        None => web::Json(User::default())
+        None => {
+            web::Json(User::default());
+            HttpResponse::Unauthorized()
+        }
     }
 }
 

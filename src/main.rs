@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use actix_cors::Cors;
 use actix_identity::IdentityMiddleware;
 use actix_session::{SessionMiddleware, storage::CookieSessionStore};
+
 mod api;
 
 static PORT: u16 = 5000;
