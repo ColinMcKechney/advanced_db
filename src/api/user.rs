@@ -24,6 +24,14 @@ pub struct User {
     last_name: String
 }
 
+#[derive(Deserialize, Serialize, Debug, Default)]
+pub struct NewUser {
+    netid: String, 
+    password: String,
+    first_name: String,
+    last_name: String
+}
+
 
 pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Responder {
     //TODO: finish login, for now will simply login for everyone
@@ -49,6 +57,23 @@ pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Respond
 pub async fn logout(user: Identity) -> impl Responder {
     user.logout();
     HttpResponse::Ok()
+}
+
+pub async fn signup(request: HttpRequest, body: web::Json<NewUser>) -> impl Responder {
+    let body = body.into_inner();
+
+    match create_user(body.netid.as_str(), body.password.as_str(), body.first_name.as_str(), body.last_name.as_str()) {
+        Ok(_) => {
+            Identity::login(&request.extensions(), body.netid.clone());
+            web::Json(User { id: body.netid, first_name: body.first_name, last_name: body.last_name});
+            HttpResponse::Ok()
+        }
+        Err(e) => {
+            error!("Error creating new user: {}", e);
+            HttpResponse::InternalServerError()
+        }
+    }
+
 }
 
 fn authenticate(username: &str, password: &str) -> Option<User> {

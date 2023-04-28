@@ -46,6 +46,10 @@ async fn main() -> std::io::Result<()> {
                         .route(web::post().to(api::user::login))
                         .route(web::delete().to(api::user::logout))
                 )
+                .service(
+                    web::resource("/signup")
+                    .route(web::post().to(api::user::signup))
+                )
                 .route("/", web::get().to(api_index))
             )
             .route("/", web::get().to(index))
