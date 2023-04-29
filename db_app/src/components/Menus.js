@@ -26,7 +26,9 @@ const theme = createTheme({
     palette: {
       primary: {
         main: lightGreen[700],
+        apple: red[500],
       },
+
     },
   });
 
@@ -38,9 +40,22 @@ function Menus() {
     <ThemeProvider theme={theme}>
     <AppBar position="static">
   <Toolbar variant="dense">
-    <Button variant="h6" color="inherit" component="div">
-      Photos
+  <Button  variant="h6" color="main" position="right">
+   Home</Button> 
+    <Button variant="h6" color="main" component="div">
+      Menus
     </Button>
+    <Button  variant="h6" >
+    Past Plans</Button> 
+    <Button variant="h6" color="main" component="div" sx={{
+    ':hover': {
+      bgcolor: '#ffc6c4', // theme.palette.primary.main
+      color: 'red',
+    },
+  }}>
+        Log out
+    </Button>
+   
   </Toolbar>
 </AppBar>
 </ThemeProvider>
