@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import Axios from 'axios';
-import './Login.css';
+import './CreateAccount.css';
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,18 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import image from "./images/main_background.jpg"
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: lightGreen[700],
+    },
+  },
+});
+
 
 function CreateAccount() {
 
@@ -51,7 +63,10 @@ function CreateAccount() {
   };
   
     return (
-      <div>
+
+      <ThemeProvider theme={theme}>
+      <div className='bg' style={{backgroundImage: 'url(' + require('./images/main_background.jpg') + ')'}}>
+      <div className='logbox'>
         <Box
         sx={{  
           marginTop: 8,
@@ -63,7 +78,7 @@ function CreateAccount() {
            <Typography component="h1" variant="h5">Create Account</Typography>
        
           
-        <form onSubmit={submitHandler}>
+        <form className='formbox' onSubmit={submitHandler}>
         <TextField
             margin="normal"
             required
@@ -134,6 +149,8 @@ function CreateAccount() {
       </Box>
       
       </div>
+      </div>
+      </ThemeProvider>
   
     );
   }
