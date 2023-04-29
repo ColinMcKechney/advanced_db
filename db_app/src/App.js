@@ -1,6 +1,7 @@
 import "./App.css";
 import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
+import Menus from "./components/Menus";
 
 
 import {
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>}></Route>
         <Route path='/CreateAccount' element={<CreateAccount/>}></Route>
+        <Route path='/Menus' element={<Menus/>}></Route>
       </Routes>
     </Router>
   );
