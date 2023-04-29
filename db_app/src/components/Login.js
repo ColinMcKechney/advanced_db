@@ -1,6 +1,8 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import Axios from 'axios';
 import './Login.css';
+
 
 function Login() {
   const navigate = useNavigate();
@@ -23,12 +25,33 @@ function Login() {
   const submitHandler = e => {
     e.preventDefault();
     console.log(data);
+    login();
   }
+
   
-    return (
+
+
+const getHello = () => {
+  Axios.get("http://3.219.93.142:8000/").then((response) => {
+     console.log(response.data);
+  });
+};
+
+const login = () => {
+  Axios.post("http://3.219.93.142:8000/api/", {net_id: username, password: password,}).then((response) => {
+     console.log(response.data);
+  });
+};
+
+
+
+
+  
+   return (
       <div>
         <center>
           <h1>Log In</h1>
+          <button onClick={getHello}>Test</button>
           <p>Log in to your account</p>
         <form onSubmit={submitHandler}>
         <p>Username:</p>
