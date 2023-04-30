@@ -154,15 +154,15 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
         }
     };
     
-    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), amount number(5), foreign key (item_id) references menu_item (id))", username).as_str()).build()?;
+    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), amount number(5), foreign key (item_id) references menu_item (item_id))", username).as_str()).build()?;
 
     match new_table.execute(&[]) {
         Ok(_) => {
             info!("User {} week table created", username);
             conn.commit()?;
         },
-        Err(_) => {
-            warn!("Failed to create week table for {}", username);
+        Err(e) => {
+            warn!("Failed to create week table for {} {}", username, e);
             conn.rollback()?;
         }
     };
