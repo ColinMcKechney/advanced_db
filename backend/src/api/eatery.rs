@@ -1,13 +1,13 @@
 use serde::{Serialize, Deserialize};
-use actix_web::{web::Path, Responder, HttpResponse};
-use oracle::{Connection, Error};
-use log::{error};
+use actix_web::{web::Path, Responder, HttpResponse, web::Json};
+use oracle::Connection;
+use log::error;
 
 const ORACLE_USER: &str = "timmy";
 const ORACLE_PASS: &str = "timmy";
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-struct food_item {
+struct FoodItem {
     item_id: u32,
     eatery_id: u32,
     item_name: String,
@@ -26,27 +26,51 @@ struct food_item {
 }
     
 
-pub fn menu(eatery: Path<String>) -> impl Responder {
+pub async fn menu(eatery: Path<String>) -> impl Responder {
     let eatery = eatery.into_inner();
-    let conn = match Connection::connect(ORACLE_USER, ORACLE_PASS, "") {
-        Ok(c) => c,
+    let response = match grab_rows(eatery) {
+        Ok(r) => r,
         Err(e) => {
-            error!("Unable to reach oracle server: {}", e);
+            error!("Failed to grab rows: {}", e);
             return HttpResponse::InternalServerError();
         }
     };
 
-    let mut stmt = match conn.statement("select * from menu_item natural join nutrition_info food where menu_item.eatery_id = :1").build() {
-        Ok(s) => s,
-        Err(e) => {
-            error!("Unable to build statement: {}", e);
-            return HttpResponse::InternalServerError();
-        }
-    };
-
-
-    let rows = stmt.query(&[&eatery]).unwrap().collect();
-    println!("{}", rows);
+    Json(response);
     HttpResponse::Ok()
 
+}
+
+
+fn grab_rows(eatery: String) -> oracle::Result<Vec<FoodItem>> {
+
+    let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, "")?;
+
+    let mut stmt = conn.statement("select * from menu_item natural join nutrition_info food where menu_item.eatery_id = :1").build()?;
+
+
+    let rows = stmt.query(&[&eatery])?;
+    let mut row_vec: Vec<FoodItem> = vec![];
+
+    for row_result in rows {
+        let row = row_result?;
+        row_vec.push( FoodItem {
+            item_id: row.get(0)?,
+            eatery_id: row.get(1)?,
+            item_name: row.get(2)?,
+            serving_size: row.get(3)?,
+            calories: row.get(4)?,
+            fat: row.get(5)?,
+            sat_fat: row.get(6)?,
+            trans_fat: row.get(7)?,
+            carbs: row.get(8)?,
+            fiber: row.get(9)?,
+            sugar: row.get(10)?,
+            protein: row.get(11)?,
+            sodium: row.get(12)?,
+            potassium: row.get(13)?,
+            cholesterol: row.get(14)?});
+    }
+
+    Ok(row_vec)
 }

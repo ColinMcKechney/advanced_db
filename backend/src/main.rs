@@ -20,7 +20,6 @@ struct Login {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    
     //init logging system
     let env = Env::default().filter_or("LOG_LEVEL", "info");
     env_logger::init_from_env(env);
@@ -36,6 +35,7 @@ async fn main() -> std::io::Result<()> {
                 .allowed_methods(vec!["GET","POST","DELETE"])
                 .supports_credentials()
                 .allow_any_header()
+                .expose_any_header()
                 )
             .wrap(IdentityMiddleware::default())
             .wrap(SessionMiddleware::new(CookieSessionStore::default(), secret_key.clone()))
