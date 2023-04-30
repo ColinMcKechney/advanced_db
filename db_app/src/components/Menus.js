@@ -51,36 +51,48 @@ const navigateLogin = () => {
     navigate('/');
 }
 
+const menuExpansion = () => {
+  navigate('/MenuExpansion');
+}
+
   const setStarbucks = () => {
     ReactSession.set("eatery", "Starbucks");
+    menuExpansion();
   }
 
   const setChick = () => {
     ReactSession.set("eatery", "Chick-fil-a");
+    menuExpansion();
   }
 
   const setABP = () => {
     ReactSession.set("eatery", "Au Bon Pain");
+    menuExpansion();
   }
 
   const setMoma = () => {
     ReactSession.set("eatery", "Modern Market");
+    menuExpansion();
   }
 
   const setTaco = () => {
     ReactSession.set("eatery", "Taco Bell");
+    menuExpansion();
   }
 
   const setDH = () => {
     ReactSession.set("eatery", "Dining Hall");
+    menuExpansion();
   }
 
   const setFlip = () => {
     ReactSession.set("eatery", "Flip Kitchen");
+    menuExpansion();
   }
 
   const setSmash = () => {
     ReactSession.set("eatery", "Smashburger");
+    menuExpansion();
   }
   
  
