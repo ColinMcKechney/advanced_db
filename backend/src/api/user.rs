@@ -3,7 +3,7 @@ use rand::{prelude::Rng, distributions::Alphanumeric };
 use oracle::{Connection, Error};
 use log::{info, warn, error};
 use actix_identity::Identity;
-use actix_web::{web, Responder, HttpRequest, HttpMessage, HttpResponse};
+use actix_web::{web, Responder, HttpRequest, HttpMessage, HttpResponse, cookie};
 use serde::{Deserialize, Serialize};
 
 
@@ -26,7 +26,7 @@ pub struct User {
 
 #[derive(Deserialize, Serialize, Debug, Default)]
 pub struct NewUser {
-    netid: String, 
+    net_id: String, 
     password: String,
     first_name: String,
     last_name: String
@@ -43,7 +43,7 @@ pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Respond
     println!("{:?}", body);
     match authenticate(net_id, password) {
         Some(user) => {
-            Identity::login(&request.extensions(), net_id.into());
+            let id = Identity::login(&request.extensions(), net_id.into()).unwrap();
             web::Json(user);
             HttpResponse::Ok()
         },
@@ -62,10 +62,10 @@ pub async fn logout(user: Identity) -> impl Responder {
 pub async fn signup(request: HttpRequest, body: web::Json<NewUser>) -> impl Responder {
     let body = body.into_inner();
 
-    match create_user(body.netid.as_str(), body.password.as_str(), body.first_name.as_str(), body.last_name.as_str()) {
+    match create_user(body.net_id.as_str(), body.password.as_str(), body.first_name.as_str(), body.last_name.as_str()) {
         Ok(_) => {
-            Identity::login(&request.extensions(), body.netid.clone());
-            web::Json(User { id: body.netid, first_name: body.first_name, last_name: body.last_name});
+            Identity::login(&request.extensions(), body.net_id.clone()).unwrap();
+            web::Json(User { id: body.net_id, first_name: body.first_name, last_name: body.last_name});
             HttpResponse::Ok()
         }
         Err(e) => {
@@ -131,7 +131,7 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
 
     info!("Creating user: {}", username); 
     let conn = Connection::connect(SQL_USERNAME, SQL_PASSWORD, "")?;
-    let mut stmt = conn.statement("insert into student values(:net_id, :first_name, :last_name, :password, :salt)").build()?;
+    let mut stmt = conn.statement("insert into student values(:net_id, :first_name, :last_name, :pswd, :salt)").build()?;
 
     let salt: String = rand::thread_rng().sample_iter(&Alphanumeric).take(SALT_LEN).map(char::from).collect();
     let mut hasher = Sha256::new();
@@ -145,13 +145,26 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
         hash_string += &format!("{:x}", value);
     }
 
-    match stmt.execute_named(&[("net_id", &username), ("first_name", &first_name), ("last_name", &last_name), ("password", &hash_string), ("salt", &salt)]) {
+    match stmt.execute_named(&[("net_id", &username), ("first_name", &first_name), ("last_name", &last_name), ("pswd", &hash_string), ("salt", &salt)]) {
         Ok(_) => {
             info!("User {} successfully created", username); 
             conn.commit()?;
         },
         Err(_) => {
             warn!("Failed to create user {}", username);
+            conn.rollback()?;
+        }
+    };
+    
+    let mut new_table = conn.statement("create table week_:netid ( item_id number(5), foreign key (item_id) references menu_item (id))").build()?;
+
+    match new_table.execute_named(&[("net_id", &username)]) {
+        Ok(_) => {
+            info!("User {} week table created", username);
+            conn.commit()?;
+        },
+        Err(_) => {
+            warn!("Failed to create week table for {}", username);
             conn.rollback()?;
         }
     };

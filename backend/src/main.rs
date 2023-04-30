@@ -1,6 +1,5 @@
-use log::{info, warn, error};
 use env_logger::Env;
-use actix_web::{web, get, post, web::Json, App, HttpResponse, HttpServer, Responder, middleware, cookie::Key};
+use actix_web::{web, App, HttpResponse, HttpServer, Responder, middleware, cookie::Key};
 use serde::{Deserialize, Serialize};
 use actix_cors::Cors;
 use actix_identity::IdentityMiddleware;
@@ -8,8 +7,8 @@ use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 
 mod api;
 
-static PORT: u16 = 5000;
-const ALLOWED_ORIGIN: &str = "http://localhost";
+static PORT: u16 = 8000;
+const ALLOWED_ORIGIN: &str = "http://localhost:8009";
 
 
 #[derive(Default, Debug, Serialize, Deserialize, Clone)]
@@ -36,6 +35,7 @@ async fn main() -> std::io::Result<()> {
                 .allowed_origin(ALLOWED_ORIGIN)
                 .allowed_methods(vec!["GET","POST","DELETE"])
                 .supports_credentials()
+                .allow_any_header()
                 )
             .wrap(IdentityMiddleware::default())
             .wrap(SessionMiddleware::new(CookieSessionStore::default(), secret_key.clone()))
