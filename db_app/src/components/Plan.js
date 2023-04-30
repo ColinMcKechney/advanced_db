@@ -2,32 +2,15 @@ import React,{useState} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
-import { Axios } from 'axios';
+import Axios from 'axios';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
 import { Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper} from '@mui/material';
 
 
@@ -88,17 +71,17 @@ const net_id = ReactSession.get("net_id");
 
 //to set nutritional goal for the week
 const [goalInput, setGoalInput] = useState({
-      total_cal: "",
-      total_fat: "",
-      total_sat_fat: "",
-      total_trans_fat: "",
-      total_carbs: "",
-      total_fiber: "",
-      total_sugar: "",
-      total_protein: "",
-      total_sodium: "",
-      total_potassium: "",
-      total_cholesterol: "",
+      total_cal: 0,
+      total_fat: 0,
+      total_sat_fat: 0,
+      total_trans_fat: 0,
+      total_carbs: 0,
+      total_fiber: 0,
+      total_sugar: 0,
+      total_protein: 0,
+      total_sodium: 0,
+      total_potassium: 0,
+      total_cholesterol: 0,
     }
 );
 
@@ -112,19 +95,23 @@ const changeGoalHandler = evt =>{
 const submitGoalHandler = evt => {
   evt.preventDefault();
   console.log(goalInput)
-  Axios.post("http://3.219.93.142:8000/api/",
+  console.log(net_id)
+  console.log(weekStart())
+  Axios.post("http://3.219.93.142:8000/api/goal",
     {
-      total_cal: total_cal[0],
-      total_fat: total_fat[0],
-      total_sat_fat: total_sat_fat[0],
-      total_trans_fat: total_trans_fat[0],
-      total_carbs: total_carbs[0],
-      total_fiber: total_fiber[0],
-      total_sugar: total_sugar[0],
-      total_protein: total_protein[0],
-      total_sodium: total_sodium[0],
-      total_potassium: total_potassium[0],
-      total_cholesterol: total_cholesterol[0]
+      net_id: net_id,
+      week_date: weekStart(),
+      total_cal: Number(total_cal[0]),
+      total_fat: Number(total_fat[0]),
+      total_sat_fat: Number(total_sat_fat[0]),
+      total_trans_fat: Number(total_trans_fat[0]),
+      total_carbs: Number(total_carbs[0]),
+      total_fiber: Number(total_fiber[0]),
+      total_sugar: Number(total_sugar[0]),
+      total_protein: Number(total_protein[0]),
+      total_sodium: Number(total_sodium[0]),
+      total_potassium: Number(total_potassium[0]),
+      total_cholesterol: Number(total_cholesterol[0])
     }).then((response) => {
       console.log(response);
       console.log(response.status);
@@ -150,7 +137,7 @@ const submitGoalHandler = evt => {
   );
 
   const {item_name, calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
-    sodium_mg, potassium_mg, cholesterol_mg, } = offCampusInput
+    sodium_mg, potassium_mg, cholesterol_mg} = offCampusInput
 
   const changeOffCampusHandler = evt => {
     setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
@@ -216,6 +203,7 @@ const submitGoalHandler = evt => {
         label="Calories"
         name="total_cal"
         size="small"
+        type="number"
         value={total_cal}
         onChange={changeGoalHandler}
       />
@@ -225,6 +213,7 @@ const submitGoalHandler = evt => {
         label="Fat (g)"
         size="small"
         name="total_fat"
+        type="number"
         value={total_fat}
         onChange={changeGoalHandler}
       />
@@ -234,6 +223,7 @@ const submitGoalHandler = evt => {
         label="Saturated Fat (g)"
         size="small"
         name="total_sat_fat"
+        type="number"
         value={total_sat_fat}
         onChange={changeGoalHandler}
       />
@@ -243,6 +233,7 @@ const submitGoalHandler = evt => {
         label="Trans Fat (g)"
         size="small"
         name="total_trans_fat"
+        type="number"
         value={total_trans_fat}
         onChange={changeGoalHandler}
       />
@@ -252,6 +243,7 @@ const submitGoalHandler = evt => {
         label="Carbs (g)"
         size="small"
         name="total_carbs"
+        type="number"
         value={total_carbs} 
         onChange={changeGoalHandler}
       />
@@ -262,6 +254,7 @@ const submitGoalHandler = evt => {
         label="Fiber (g)"
         size="small"
         name="total_fiber"
+        type="number"
         value={total_fiber}
         onChange={changeGoalHandler}
       />
@@ -271,6 +264,7 @@ const submitGoalHandler = evt => {
         label="Sugar (g)"
         size="small"
         name="total_sugar"
+        type="number"
         value={total_sugar}
         onChange={changeGoalHandler}
       />
@@ -280,6 +274,7 @@ const submitGoalHandler = evt => {
         label="Protein (g)"
         size="small"
         name="total_protein"
+        type="number"
         value={total_protein}
         onChange={changeGoalHandler}
       />
@@ -289,6 +284,7 @@ const submitGoalHandler = evt => {
         label="Sodium (mg)"
         size="small"
         name="total_sodium"
+        type="number"
         value={total_sodium}
         onChange={changeGoalHandler}
       />
@@ -298,6 +294,7 @@ const submitGoalHandler = evt => {
         label="Potassium (mg)"
         size="small"
         name="total_potassium"
+        type="number"
         value={total_potassium}
         onChange={changeGoalHandler}
       />
@@ -307,6 +304,7 @@ const submitGoalHandler = evt => {
         label="Cholesterol (mg)"
         size="small"
         name="total_cholesterol"
+        type="number"
         value={total_cholesterol}
         onChange={changeGoalHandler}
       />
@@ -446,21 +444,6 @@ const submitGoalHandler = evt => {
         On-Campus
       </h3>
       <form>
-          &nbsp; &nbsp;
-          <FormControl sx={{minWidth:170 }}>
-            <InputLabel id="dining-location-select-label">Dining Location</InputLabel>
-            <Select labelId="dining-location-select-label" id="dining-location-select" label="Dining Location">
-              <MenuItem>DH</MenuItem>
-              <MenuItem>Chick-fil-a</MenuItem>
-              <MenuItem>Smashburger</MenuItem>
-              <MenuItem>Flip Kitchen</MenuItem>
-              <MenuItem>ABP</MenuItem>
-              <MenuItem>Starbucks</MenuItem>
-              <MenuItem>Modern Market</MenuItem>
-              <MenuItem>Taco Bell</MenuItem>
-            </Select>
-          </FormControl>
-
           &nbsp; &nbsp;
           <TextField
             id="keywordsearch"
