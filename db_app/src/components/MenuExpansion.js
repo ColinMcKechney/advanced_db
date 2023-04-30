@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -24,6 +24,18 @@ import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
 import Axios from 'axios';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
+
+
+
 
 
 const theme = createTheme({
@@ -80,7 +92,10 @@ const buttonTime = () => {
  console.log(menuItems);
 }
  
-  
+useEffect(() => {
+  getMenu()
+  console.log('Menu in')
+}, [])
  
 
   return (
@@ -105,8 +120,62 @@ const buttonTime = () => {
     </Button>
   </Toolbar>
 </AppBar>
-<Button onClick={buttonTime}>Please God Work</Button>
-<ul>{menuItems.map(menuitem => <li key={menuitem.item_name}>{menuitem.item_name}</li>)}</ul>
+
+<h3 sx={{padding:10, margin: 5}}>
+        &nbsp; &nbsp;
+        Menu Items:
+      </h3>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer component={Paper} sx={{margin: 5, maxHeight: 440}}>
+          <Table stickyHeader sx={{maxWidth:700, size:"small"}}>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ maxWidth: 120 }}  align="left">Food</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Calories</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Protein&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {menuItems.map((menuItem, i) => {
+              console.log(i);
+              return(
+                <TableRow
+                    key={menuItem.item_name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell>
+                      {menuItem.item_name}
+                    </TableCell>
+        
+              <TableCell> {menuItem.calories}</TableCell>
+              <TableCell> {menuItem.fat}</TableCell>
+              <TableCell> {menuItem.sat_fat}</TableCell>
+              <TableCell> {menuItem.trans_fat}</TableCell>
+              <TableCell> {menuItem.carbs}</TableCell>
+              <TableCell> {menuItem.fiber}</TableCell>
+              <TableCell>{menuItem.sugar} </TableCell>
+              <TableCell> {menuItem.protein}</TableCell>
+              <TableCell>{menuItem.sodium} </TableCell>
+              <TableCell> {menuItem.potassium}</TableCell>
+              <TableCell> {menuItem.cholesterol}</TableCell>
+            </TableRow>
+            )
+          })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </Paper>
+
 
 
 
