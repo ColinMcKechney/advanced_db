@@ -1,8 +1,9 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import { CardMedia, CardContent } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -24,8 +25,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
 
 
-
-
 const theme = createTheme({
     palette: {
       primary: {
@@ -36,45 +35,46 @@ const theme = createTheme({
     },
   });
 
-function MyPlan() {
+  
 
+  const getEatery = () => {
+    return ReactSession.get("eatery");
+ }
+
+  function MenuExpansion() {
     const navigate = useNavigate();
 
 	const Home = () => {
-        navigate('/Plan');
+		 navigate('/Plan');
+	}
+    const Menus = () => {
+        navigate('/Menus');
    }
-   const Menus = () => {
-       navigate('/Menus');
-  }
-  const Past = () => {
-   navigate('/Past');
+   const Past = () => {
+    navigate('/Past');
 }
 const navigateLogin = () => {
     navigate('/');
 }
 
-const logout = () => {
-    ReactSession.set("net_id", "");
-    navigateLogin();
 
-}
-  
-    return (
 
-    
 
-        <ThemeProvider theme={theme}>  
-      <div>
-         <AppBar position="static">
+
+return(
+
+
+    <ThemeProvider theme={theme}>
+    <AppBar className='bar' position="static">
   <Toolbar variant="dense">
   <Button  variant="h6" color="main" position="right" onClick={Home}>
    Home</Button> 
     <Button variant="h6" color="main" component="div" onClick={Menus}>
       Menus
     </Button>
-    <Button  variant="h6"onClick={Past} >
+    <Button  variant="h6" onClick="Past">
     Past Plans</Button> 
-    <Button variant="h6" color="main" component="div" onClick={logout} sx={{
+    <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
     ':hover': {
       bgcolor: '#ffc6c4', // theme.palette.primary.main
       color: 'red',
@@ -82,13 +82,10 @@ const logout = () => {
   }}>
         Log out
     </Button>
-   
   </Toolbar>
 </AppBar>
-      </div>
-    </ThemeProvider>
-  
-    );
-  }
-  
-  export default MyPlan;
+</ThemeProvider>
+)
+
+}
+export default MenuExpansion;
