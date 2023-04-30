@@ -134,6 +134,7 @@ const submitGoalHandler = evt => {
 
 //to add an off campus food item or meal to your weekly journal
   const [offCampusInput, setOffCampusInput] = useState({
+    item_name:"",
     calories: "",
     fat_g: "",
     sat_fat_g: "",
@@ -142,21 +143,39 @@ const submitGoalHandler = evt => {
     fiber_g: "",
     sugar_g: "",
     protein_g: "",
-    sodium_g: "",
-    potassium_g: "",
-    cholesterol_g: "",
+    sodium_mg: "",
+    potassium_mg: "",
+    cholesterol_mg: "",
   }
   );
 
-  const { calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
-    sodium_g, potassium_g, cholesterol_g, } = offCampusInput
+  const {item_name, calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
+    sodium_mg, potassium_mg, cholesterol_mg, } = offCampusInput
 
-  const changeoffCampusHandler = evt => {
+  const changeOffCampusHandler = evt => {
     setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
   }
 
-  const submitoffCampusHandler = evt => {
+  const submitOffCampusHandler = evt => {
     evt.preventDefault();
+    console.log(offCampusInput)
+    Axios.post("http://3.219.93.142:8000/api/",
+      {
+        calories: calories[0],
+        trans_fat_g: trans_fat_g[0],
+        sat_fat_g: sat_fat_g[0],
+        trans_fat_g: trans_fat_g[0],
+        carbs_g: carbs_g[0],
+        fiber_g: fiber_g[0],
+        sugar_g: sugar_g[0],
+        protein_g: protein_g[0],
+        sodium_mg: sodium_mg[0],
+        potassium_mg: potassium_mg[0],
+        cholesterol_mg: cholesterol_mg[0]
+      }).then((response) => {
+        console.log(response);
+        console.log(response.status);
+      })
   };
 
   
@@ -196,17 +215,17 @@ const submitGoalHandler = evt => {
         id="total_cal"
         label="Calories"
         name="total_cal"
+        size="small"
         value={total_cal}
-        size ="small"
         onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
         id="total_fat"
         label="Fat (g)"
+        size="small"
         name="total_fat"
         value={total_fat}
-        size="small"
         onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
@@ -460,81 +479,118 @@ const submitGoalHandler = evt => {
       <h3> &nbsp; &nbsp;
         Off-Campus
       </h3>
-        <form>
+        <form onSubmit={submitOffCampusHandler}>
           &nbsp; &nbsp;
           <TextField
             sx={{ paddingBottom: 1 }}
-            id="food-input"
+            id="item_name"
             label="Food Item"
             size="small"
+            name="item_name"
+            value={item_name}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
             sx={{ paddingBottom: 1 }}
-            id="calorie-input"
+            id="calories"
             label="Calories"
             size="small"
+            name="calories"
+            value={calories}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="fat-input"
+            id="fat"
             label="Fat (g)"
             size="small"
+            name="fat_g"
+            value={fat_g}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="saturated_fat-input"
+            id="sat_fat"
             label="Saturated Fat (g)"
             size="small"
+            name="sat_fat_g"
+            value={sat_fat_g}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="trans_fat-input"
+            id="trans_fat"
             label="Trans Fat (g)"
             size="small"
+            name="trans_fat_g"
+            value={trans_fat_g}
+            onChange={changeOffCampusHandler}
           />
+          
           &nbsp; &nbsp;
           <TextField
-            id="carbs-input"
+            id="carbs"
             label="Carbs (g)"
             size="small"
+            name="carbs_g"
+            value={carbs_g}
+            onChange={changeOffCampusHandler}
           />
           <br></br>
           &nbsp; &nbsp;
           <TextField
-            id="fiber-input"
+            id="fiber"
             label="Fiber (g)"
             size="small"
+            name="fiber_g"
+            value={fiber_g}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="sugar-input"
+            id="sugar"
             label="Sugar (g)"
             size="small"
+            name="sugar_g"
+            value={sugar_g}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="protein-input"
+            id="protein"
             label="Protein (g)"
             size="small"
+            name="protein_g"
+            value={protein_g}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="sodium-input"
+            id="sodium"
             label="Sodium (mg)"
             size="small"
+            name="sodium_mg"
+            value={sodium_mg}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="potassium-input"
+            id="potassium"
             label="Potassium (mg)"
             size="small"
+            name="potassium_mg"
+            value={potassium_mg}
+            onChange={changeOffCampusHandler}
           />
           &nbsp; &nbsp;
           <TextField
-            id="cholesterol-input"
+            id="cholesterol"
             label="Cholesterol (mg)"
             size="small"
+            name="cholesterol_mg"
+            value={cholesterol_mg}
+            onChange={changeOffCampusHandler}
           />
           <br></br>
           <br></br>
@@ -545,8 +601,7 @@ const submitGoalHandler = evt => {
             variant="contained"
             size="large">
             Submit</Button>
-        </form>
-
+      </form>
     </div>
     </ThemeProvider>
   
