@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -36,19 +36,14 @@ const theme = createTheme({
     },
   });
 
-  
+function Menus() {
 
-  const getEatery = () => {
-    return ReactSession.get("eatery");
- }
-
-  function MenuExpansion() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
 	const Home = () => {
 		 navigate('/Plan');
 	}
-    const Menus = () => {
+  const Menus = () => {
         navigate('/Menus');
    }
    const Past = () => {
@@ -57,22 +52,38 @@ const theme = createTheme({
 const navigateLogin = () => {
     navigate('/');
 }
+const makeEateryUrl = (eatery) => `http://3.219.93.142:8000/api/eatery/${eatery}`;
+const getEatery = () => {
+  return ReactSession.get("eatery");
+}
 
-const makeEateryUrl = (eatery) => `http://3.219.93.142:8000/eatery/${eatery}`;
 
 const getMenu = () => {
-  const eatery_to_query = getEatery();
-  Axios.get(makeEateryUrl(eatery_to_query)).then((response) => {
-     console.log(response.data);
-  });
-};
+const eatery_to_query = getEatery();
+ Axios.get(makeEateryUrl(eatery_to_query)).then((response) => {
+  console.log(response.data);
+  setmenuItems(response.data);
+});
+ 
+}
 
 
+const [menuItems, setmenuItems] = useState([{}]);
 
+const doMenu = () => {
+  const data = getMenu();
+  setmenuItems(data);
+}
 
+const buttonTime = () => {
+ getMenu();
+ console.log(menuItems);
+}
+ 
+  
+ 
 
-return(
-
+  return (
 
     <ThemeProvider theme={theme}>
     <AppBar className='bar' position="static">
@@ -94,10 +105,13 @@ return(
     </Button>
   </Toolbar>
 </AppBar>
+<Button onClick={buttonTime}>Please God Work</Button>
+<ul>{menuItems.map(menuitem => <li key={menuitem.item_name}>{menuitem.item_name}</li>)}</ul>
 
-<Button onClick={getMenu}>Test get menu</Button>
+
+
 </ThemeProvider>
-)
-
+  
+  );
 }
-export default MenuExpansion;
+export default Menus;

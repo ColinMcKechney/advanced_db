@@ -37,7 +37,8 @@ const theme = createTheme({
   });
 
 function Menus() {
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
 	const Home = () => {
 		 navigate('/Plan');
