@@ -5,19 +5,19 @@ use log::{error, info};
 use crate::config::{ORACLE_PASS, ORACLE_USER, ORACLE_CON_STR};
 
 #[derive(Deserialize, Serialize, Debug, Default)]
-struct PlanData{
+pub struct PlanData{
     net_id: String,
-    total_cal: f32,
-    total_fat: f32,
-    total_sat_fat: f32,
-    total_trans_fat: f32,
-    total_carbs: f32,
-    total_fiber: f32,
-    total_sugar: f32,
-    total_protein: f32,
-    total_sodium: f32,
-    total_potassium: f32,
-    total_cholesterol: f32
+    total_cal: Option<f32>,
+    total_fat: Option<f32>,
+    total_sat_fat: Option<f32>,
+    total_trans_fat: Option<f32>,
+    total_carbs: Option<f32>,
+    total_fiber: Option<f32>,
+    total_sugar: Option<f32>,
+    total_protein: Option<f32>,
+    total_sodium: Option<f32>,
+    total_potassium: Option<f32>,
+    total_cholesterol: Option<f32>
 }
 
 pub async fn plan(body: Json<PlanData>) -> impl Responder {
