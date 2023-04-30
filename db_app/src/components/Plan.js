@@ -87,9 +87,7 @@ function weekStart(){
 const net_id = ReactSession.get("net_id");
 
 //to set nutritional goal for the week
-const [goalInput, setGoalInput] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
+const [goalInput, setGoalInput] = useState({
       total_cal: "",
       total_fat: "",
       total_sat_fat: "",
@@ -104,12 +102,18 @@ const [goalInput, setGoalInput] = useReducer(
     }
 );
 
+const{total_cal, total_fat, total_sat_fat, total_trans_fat, total_carbs, total_fiber, 
+  total_sugar, total_protein, total_sodium, total_potassium, total_cholesterol} = goalInput
 
-const handleSubmit = evt => {
-  let data = {goalInput}
+const changeGoalHandler = evt =>{
+  setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
+}
+
+const submitGoalHandler = evt => {
+  evt.preventDefault();
 
   Axios.post()
-}
+};
   
   return (
   <ThemeProvider theme={theme}>  
@@ -140,74 +144,107 @@ const handleSubmit = evt => {
       <h1>&nbsp; Your Plan</h1>
       <h2>&nbsp; &nbsp;Goal for the week of: </h2>
 
-      <form>
+      <form onSubmit={submitGoalHandler}>
       &nbsp; &nbsp;
       <TextField
         sx={{ paddingBottom: 1 }}
-        id="calorie-input"
+        id="total_cal"
         label="Calories"
+        name="total_cal"
+        value={total_cal}
         size ="small"
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="fat-input"
+        id="total_fat"
         label="Fat (g)"
+        name="total_fat"
+        value={total_fat}
         size="small"
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="saturated_fat-input"
+        id="total_sat_fat"
         label="Saturated Fat (g)"
         size="small"
+        name="total_sat_fat"
+        value={total_sat_fat}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="trans_fat-input"
+        id="total_trans_fat"
         label="Trans Fat (g)"
         size="small"
+        name="total_trans_fat"
+        value={total_trans_fat}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="carbs-input"
+        id="total_carbs"
         label="Carbs (g)"
-        size="small" 
+        size="small"
+        name="total_carbs"
+        value={total_carbs} 
+        onChange={changeGoalHandler}
       />
       <br></br>
       &nbsp; &nbsp;
       <TextField
-        id="fiber-input"
+        id="total_fiber"
         label="Fiber (g)"
         size="small"
+        name="total_fiber"
+        value={total_fiber}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="sugar-input"
+        id="total_sugar"
         label="Sugar (g)"
         size="small"
+        name="total_sugar"
+        value={total_sugar}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="protein-input"
+        id="total_protein"
         label="Protein (g)"
         size="small"
+        name="total_protein"
+        value={total_protein}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="sodium-input"
+        id="total_sodium"
         label="Sodium (mg)"
         size="small"
+        name="total_sodium"
+        value={total_sodium}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="potassium-input"
+        id="total_potassium"
         label="Potassium (mg)"
         size="small"
+        name="total_potassium"
+        value={total_potassium}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="cholesterol-input"
+        id="total_cholesterol"
         label="Cholesterol (mg)"
         size="small"
+        name="total_cholesterol"
+        value={total_cholesterol}
+        onChange={changeGoalHandler}
       />
       <br></br>
       <br></br>
