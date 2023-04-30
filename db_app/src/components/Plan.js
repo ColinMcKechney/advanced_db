@@ -1,4 +1,4 @@
-import React,{useState, useReducer} from 'react';
+import React,{useState} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -111,9 +111,54 @@ const changeGoalHandler = evt =>{
 
 const submitGoalHandler = evt => {
   evt.preventDefault();
-
-  Axios.post()
+  console.log(goalInput)
+  Axios.post("http://3.219.93.142:8000/api/",
+    {
+      total_cal: total_cal[0],
+      total_fat: total_fat[0],
+      total_sat_fat: total_sat_fat[0],
+      total_trans_fat: total_trans_fat[0],
+      total_carbs: total_carbs[0],
+      total_fiber: total_fiber[0],
+      total_sugar: total_sugar[0],
+      total_protein: total_protein[0],
+      total_sodium: total_sodium[0],
+      total_potassium: total_potassium[0],
+      total_cholesterol: total_cholesterol[0]
+    }).then((response) => {
+      console.log(response);
+      console.log(response.status);
+    })
 };
+
+
+//to add an off campus food item or meal to your weekly journal
+  const [offCampusInput, setOffCampusInput] = useState({
+    calories: "",
+    fat_g: "",
+    sat_fat_g: "",
+    trans_fat_g: "",
+    carbs_g: "",
+    fiber_g: "",
+    sugar_g: "",
+    protein_g: "",
+    sodium_g: "",
+    potassium_g: "",
+    cholesterol_g: "",
+  }
+  );
+
+  const { calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
+    sodium_g, potassium_g, cholesterol_g, } = offCampusInput
+
+  const changeoffCampusHandler = evt => {
+    setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
+  }
+
+  const submitoffCampusHandler = evt => {
+    evt.preventDefault();
+  };
+
   
   return (
   <ThemeProvider theme={theme}>  
@@ -274,7 +319,7 @@ const submitGoalHandler = evt => {
           <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: 90 }}  align="lect">Food</TableCell>
+              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
               <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
               <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
               <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
