@@ -40,9 +40,29 @@ function MyPlan() {
 		 navigate('/');
 	}
 
+//get the start of each week and reformat to Oracle date type
+function weekStart(){
+  var date_str = new Date();
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  var weekday = days[date_str.getDay()]
+
+  if (weekday != 'Sunday'){
+    return;
+  }
+
+  var date_str = new Date();
+  var curr_day = String(date_str.getDate()).padStart(2, '0');
+  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+  var curr_month = months[date_str.getMonth()];
+  var curr_year = String(date_str.getFullYear());
+  var db_date = curr_day + '-' + curr_month + '-' + curr_year.slice(2);
+
+  return db_date;
+}
+
   
-  
-    return (
+  return (
         <ThemeProvider theme={theme}>  
       <div>
          <AppBar position="static">
@@ -66,6 +86,58 @@ function MyPlan() {
   </Toolbar>
 </AppBar>
       </div>
+        <h1>&nbsp; Your Plan</h1>
+
+        <form>
+        <TextField
+          id="calorie-input"
+          label="Calories"
+        />
+        <TextField
+          id="fat-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="saturated_fat-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="trans_fat-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="carbs-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="fiber-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="sugar-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="protein-input"
+          label="Fat (g)"
+
+        />
+        <TextField
+          id="sodium-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="potassium-input"
+          label="Fat (g)"
+        />
+        <TextField
+          id="cholesterol-input"
+          label="Fat (g)"
+          defaultValue="0"
+        />
+        </form>
+
+
     </ThemeProvider>
   
     );
