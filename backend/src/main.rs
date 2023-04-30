@@ -50,6 +50,10 @@ async fn main() -> std::io::Result<()> {
                     web::resource("/signup")
                     .route(web::post().to(api::user::signup))
                 )
+                .service(
+                    web::resource("/eatery/{eatery_id}")
+                    .route(web::get().to(api::eatery::menu))
+                )
                 .route("/", web::get().to(api_index))
             )
             .route("/", web::get().to(index))
