@@ -69,5 +69,7 @@ fn grab_rows(eatery: String) -> oracle::Result<Vec<FoodItem>> {
             cholesterol: row.get(14).unwrap_or(None)});
     }
 
+    conn.close()?;
+
     Ok(row_vec)
 }

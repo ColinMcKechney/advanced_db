@@ -55,6 +55,8 @@ fn create_plan(plan: PlanData) -> Result<()> {
     ("total_cholesterol", &plan.total_cholesterol)])?;
 
     info!("Created new plan for user: {}", plan.net_id);
+    conn.commit()?;
+    conn.close()?;
     Ok(())
 
 }
