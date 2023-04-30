@@ -79,6 +79,8 @@ const [goalInput, setGoalInput] = useReducer(
     }
 );
 
+const net_id = ReactSession.get("net_id");
+
 const handleSubmit = evt => {
   let data = {goalInput}
 
