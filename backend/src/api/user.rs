@@ -154,9 +154,9 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
         }
     };
     
-    let mut new_table = conn.statement("create table :net_id ( item_id number(5), foreign key (item_id) references menu_item (id))").build()?;
+    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), foreign key (item_id) references menu_item (id))", username).as_str()).build()?;
 
-    match new_table.execute_named(&[("net_id", &username)]) {
+    match new_table.execute(&[]) {
         Ok(_) => {
             info!("User {} week table created", username);
             conn.commit()?;
