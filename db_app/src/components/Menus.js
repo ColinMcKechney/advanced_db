@@ -22,6 +22,8 @@ import MenuIcon from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ReactSession } from 'react-client-session';
+
 
 const theme = createTheme({
     palette: {
@@ -48,6 +50,52 @@ function Menus() {
 const navigateLogin = () => {
     navigate('/');
 }
+
+const menuExpansion = () => {
+  navigate('/MenuExpansion');
+}
+
+  const setStarbucks = () => {
+    ReactSession.set("eatery", "Starbucks");
+    menuExpansion();
+  }
+
+  const setChick = () => {
+    ReactSession.set("eatery", "Chick-fil-a");
+    menuExpansion();
+  }
+
+  const setABP = () => {
+    ReactSession.set("eatery", "Au Bon Pain");
+    menuExpansion();
+  }
+
+  const setMoma = () => {
+    ReactSession.set("eatery", "Modern Market");
+    menuExpansion();
+  }
+
+  const setTaco = () => {
+    ReactSession.set("eatery", "Taco Bell");
+    menuExpansion();
+  }
+
+  const setDH = () => {
+    ReactSession.set("eatery", "Dining Hall");
+    menuExpansion();
+  }
+
+  const setFlip = () => {
+    ReactSession.set("eatery", "Flip Kitchen");
+    menuExpansion();
+  }
+
+  const setSmash = () => {
+    ReactSession.set("eatery", "Smashburger");
+    menuExpansion();
+  }
+  
+ 
 
   return (
 
@@ -94,7 +142,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Dining Hall
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setDH}>View Items</Button>
       </CardContent>
       </Card>
 
@@ -108,7 +156,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Starbucks
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setStarbucks}>View Items</Button>
       </CardContent>
       </Card>
       </Box>
@@ -128,7 +176,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           ABP
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setABP}>View Items</Button>
       </CardContent>
       </Card>
 
@@ -142,7 +190,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Chick-fil-a
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setChick}>View Items</Button>
       </CardContent>
       </Card>
       </Box>
@@ -161,7 +209,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Flip Kitchen
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setFlip}>View Items</Button>
       </CardContent>
       </Card>
 
@@ -175,7 +223,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Modern Market
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setMoma}>View Items</Button>
       </CardContent>
       </Card>
       </Box>
@@ -194,7 +242,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Taco Bell
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setTaco}>View Items</Button>
       </CardContent>
       </Card>
 
@@ -208,7 +256,7 @@ const navigateLogin = () => {
         <Typography gutterBottom variant="h5" component="div">
           Smashburger
         </Typography>
-        <Button>View Items</Button>
+        <Button onClick={setSmash}>View Items</Button>
       </CardContent>
       </Card>
       </Box>

@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Menus from "./components/Menus";
 import Plan from "./components/Plan";
+import MenuExpansion from "./components/MenuExpansion";
 import { ReactSession } from 'react-client-session';
 
 import {
@@ -15,8 +16,6 @@ import {
 ReactSession.setStoreType("sessionStorage");
 function App() {
 
-
-  
   return (
     <Router>
       <Routes>
@@ -24,6 +23,7 @@ function App() {
         <Route path='/CreateAccount' element={<CreateAccount/>}></Route>
         <Route path='/Menus' element={<Menus/>}></Route>
         <Route path='/Plan' element={<Plan/>}></Route>
+        <Route path='/MenuExpansion' element={<MenuExpansion/>}></Route>
       </Routes>
     </Router>
   );
