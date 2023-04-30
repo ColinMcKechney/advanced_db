@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useReducer} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -21,6 +21,7 @@ import MenuIcon from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Axios } from 'axios';
 
 const theme = createTheme({
     palette: {
@@ -61,6 +62,28 @@ function weekStart(){
   return db_date;
 }
 
+const [goalInput, setGoalInput] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      total_cal: "",
+      total_fat: "",
+      total_sat_fat: "",
+      total_trans_fat: "",
+      total_carbs: "",
+      total_fiber: "",
+      total_sugar: "",
+      total_protein: "",
+      total_sodium: "",
+      total_potassium: "",
+      total_cholesterol: "",
+    }
+);
+
+const handleSubmit = evt => {
+  let data = {goalInput}
+
+  Axios.post()
+}
   
   return (
         <ThemeProvider theme={theme}>  
@@ -86,57 +109,110 @@ function weekStart(){
   </Toolbar>
 </AppBar>
       </div>
+      <div>
         <h1>&nbsp; Your Plan</h1>
+        <h2>&nbsp; &nbsp;Goal for the week of: </h2>
 
         <form>
+        <>&nbsp; &nbsp;</>
         <TextField
+          sx={{ paddingBottom: 1 }}
           id="calorie-input"
           label="Calories"
+          size ="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="fat-input"
           label="Fat (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="saturated_fat-input"
-          label="Fat (g)"
+          label="Saturated Fat (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="trans_fat-input"
-          label="Fat (g)"
+          label="Trans Fat (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="carbs-input"
-          label="Fat (g)"
+          label="Carbs (g)"
+          size="small" 
         />
+        <br></br>
+        <>&nbsp; &nbsp;</>
         <TextField
           id="fiber-input"
-          label="Fat (g)"
+          label="Fiber (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="sugar-input"
-          label="Fat (g)"
+          label="Sugar (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="protein-input"
-          label="Fat (g)"
-
+          label="Protein (g)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="sodium-input"
-          label="Fat (g)"
+          label="Sodium (mg)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="potassium-input"
-          label="Fat (g)"
+          label="Potassium (mg)"
+          size="small"
         />
+        <>&nbsp; &nbsp;</>
         <TextField
           id="cholesterol-input"
-          label="Fat (g)"
-          defaultValue="0"
+          label="Cholesterol (mg)"
+          size="small"
         />
+        <br></br>
+        <br></br>
+        <>&nbsp; &nbsp;</>
+        <Button 
+        type="submit" 
+        variant="contained"
+        size = "large">
+        Submit</Button>
         </form>
+      </div>
+      <br></br>
+      
+      <div>
+        <h2>
+          &nbsp; &nbsp;
+          So Far This Week:
+        </h2>
+      </div>
 
+      <div>
+        <h2>
+          &nbsp; &nbsp;
+          Add to Food Journal
+        </h2>
+        <h3> &nbsp; &nbsp; &nbsp;
+          On-Campus
+        </h3>
+        <h3> &nbsp; &nbsp; &nbsp;
+          Off-Campus
+        </h3>
+      </div>
 
     </ThemeProvider>
   
