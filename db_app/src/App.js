@@ -12,7 +12,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
-ReactSession.setStoreType("localStorage");
+ReactSession.setStoreType("sessionStorage");
 function App() {
 
 

@@ -34,6 +34,10 @@ export function Login() {
 		 navigate('/CreateAccount');
 	}
 
+  const navigateHome = () => {
+    navigate('/Plan');
+ }
+
 const [data,setData] = useState({
     net_id:"",
     password:""
@@ -50,11 +54,12 @@ const [data,setData] = useState({
     console.log(data);
     console.log(net_id[0])
     login();
-    ReactSession.set("username", net_id[0]);
-    ReactSession.set("password", password[0]);
+    
   }
 
-  
+const setSession = () => {
+  ReactSession.set("net_id", net_id[0]);
+}
 
 
 const getHello = () => {
@@ -66,7 +71,12 @@ const getHello = () => {
 const login = () => {
   Axios.post("http://3.219.93.142:8000/api/auth", {net_id: net_id[0], password: password[0],}).then((response) => {
      console.log(response);
-     console.log(response.status)
+     console.log(response.status);
+     if (response.status === 200){
+      setSession();
+      navigateHome();
+     }
+
   });
 };
 

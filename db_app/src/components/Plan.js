@@ -21,7 +21,7 @@ import MenuIcon from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import { ReactSession } from 'react-client-session';
 
 
 
@@ -51,6 +51,12 @@ function MyPlan() {
 const navigateLogin = () => {
     navigate('/');
 }
+
+const logout = () => {
+    ReactSession.set("net_id", "");
+    navigateLogin();
+
+}
   
     return (
 
@@ -67,7 +73,7 @@ const navigateLogin = () => {
     </Button>
     <Button  variant="h6"onClick={Past} >
     Past Plans</Button> 
-    <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
+    <Button variant="h6" color="main" component="div" onClick={logout} sx={{
     ':hover': {
       bgcolor: '#ffc6c4', // theme.palette.primary.main
       color: 'red',
