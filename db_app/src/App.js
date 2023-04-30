@@ -3,7 +3,7 @@ import Login from "./components/Login";
 import CreateAccount from "./components/CreateAccount";
 import Menus from "./components/Menus";
 import Plan from "./components/Plan";
-
+import { ReactSession } from 'react-client-session';
 
 import {
   BrowserRouter as Router,
@@ -12,6 +12,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 
+ReactSession.setStoreType("localStorage");
 function App() {
 
 

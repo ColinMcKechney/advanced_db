@@ -22,6 +22,9 @@ import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+
+
+
 const theme = createTheme({
     palette: {
       primary: {
@@ -36,25 +39,35 @@ function MyPlan() {
 
     const navigate = useNavigate();
 
-	const navigateLogin = () => {
-		 navigate('/');
-	}
-
-  
+	const Home = () => {
+        navigate('/Plan');
+   }
+   const Menus = () => {
+       navigate('/Menus');
+  }
+  const Past = () => {
+   navigate('/Past');
+}
+const navigateLogin = () => {
+    navigate('/');
+}
   
     return (
+
+    
+
         <ThemeProvider theme={theme}>  
       <div>
          <AppBar position="static">
   <Toolbar variant="dense">
-  <Button  variant="h6" color="main" position="right">
+  <Button  variant="h6" color="main" position="right" onClick={Home}>
    Home</Button> 
-    <Button variant="h6" color="main" component="div">
+    <Button variant="h6" color="main" component="div" onClick={Menus}>
       Menus
     </Button>
-    <Button  variant="h6" >
+    <Button  variant="h6"onClick={Past} >
     Past Plans</Button> 
-    <Button variant="h6" color="main" component="div" sx={{
+    <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
     ':hover': {
       bgcolor: '#ffc6c4', // theme.palette.primary.main
       color: 'red',

@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import image from "./images/main_background.jpg"
+import { ReactSession } from 'react-client-session';
 
 const theme = createTheme({
     palette: {
@@ -24,18 +25,20 @@ const theme = createTheme({
     },
   });
 
-function Login() {
+
+
+export function Login() {
   const navigate = useNavigate();
 
 	const navigateCreateAccount = () => {
 		 navigate('/CreateAccount');
 	}
 
-  const [data,setData] = useState({
+const [data,setData] = useState({
     net_id:"",
     password:""
   })
-  
+
   const {net_id,password} = data;
   
   const changeHandler = e => {
@@ -47,6 +50,8 @@ function Login() {
     console.log(data);
     console.log(net_id[0])
     login();
+    ReactSession.set("username", net_id[0]);
+    ReactSession.set("password", password[0]);
   }
 
   
@@ -61,23 +66,16 @@ const getHello = () => {
 const login = () => {
   Axios.post("http://3.219.93.142:8000/api/auth", {net_id: net_id[0], password: password[0],}).then((response) => {
      console.log(response);
-     console.log(response.headers)
+     console.log(response.status)
   });
 };
 
 
-
-
-
-  
    return (
     
     
         <ThemeProvider theme={theme}>
       <div className='bg' style={{backgroundImage: 'url(' + require('./images/main_background.jpg') + ')'}}>
-     
- 
-      
       <div className='logbox'>
        <Box
         sx={{  
@@ -142,3 +140,5 @@ const login = () => {
   }
   
   export default Login;
+
+
