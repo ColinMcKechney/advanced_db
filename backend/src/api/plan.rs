@@ -36,15 +36,19 @@ fn create_plan(plan: PlanData) -> Result<()> {
 
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
 
-    let mut stmt = conn.statement("insert into table goal values(:net_id, :total_cal, :total_fat, :total_sat_fat, :total_trans_fat, :total_carbs, :total_fiber, :total_sugar, :total_protein, :total_sodium, :total_potassium, :total_cholesterol)").build()?;
+    let mut stmt = conn.statement("insert into goal values(:net_id, :total_cal, :total_fat, :total_sat_fat, :total_trans_fat, :total_carbs, :total_fiber, :total_sugar, :total_protein, :total_sodium, :total_potassium, :total_cholesterol)").build()?;
 
-    stmt.execute_named(&[("net_id", &plan.net_id), ("total_cal", &plan.total_cal), 
+    stmt.execute_named(&[
+    ("net_id", &plan.net_id), 
+    ("total_cal", &plan.total_cal), 
     ("total_fat", &plan.total_fat),
     ("total_sat_fat", &plan.total_sat_fat),
     ("total_trans_fat", &plan.total_trans_fat),
     ("total_carbs", &plan.total_carbs),
+    ("total_fiber", &plan.total_fiber),
     ("total_sugar", &plan.total_sugar),
     ("total_protein", &plan.total_protein),
+    ("total_sodium", &plan.total_sodium),
     ("total_potassium", &plan.total_potassium),
     ("total_cholesterol", &plan.total_cholesterol)])?;
 
