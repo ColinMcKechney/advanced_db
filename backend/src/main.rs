@@ -6,6 +6,7 @@ use actix_identity::IdentityMiddleware;
 use actix_session::{SessionMiddleware, storage::CookieSessionStore};
 
 mod api;
+mod config;
 
 static PORT: u16 = 8000;
 const ALLOWED_ORIGIN: &str = "http://localhost:8009";
@@ -53,6 +54,10 @@ async fn main() -> std::io::Result<()> {
                 .service(
                     web::resource("/eatery/{eatery_id}")
                     .route(web::get().to(api::eatery::menu))
+                )
+                .service(
+                    web::resource("/goal")
+                    .route(web::post().to(api::plan::plan))
                 )
                 .route("/", web::get().to(api_index))
             )

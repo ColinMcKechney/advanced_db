@@ -5,10 +5,8 @@ use log::{info, warn, error};
 use actix_identity::Identity;
 use actix_web::{web, Responder, HttpRequest, HttpMessage, HttpResponse, cookie};
 use serde::{Deserialize, Serialize};
+use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};
 
-
-static SQL_USERNAME: &str = "group09_user";
-static SQL_PASSWORD: &str = "group09_user";
 static SALT_LEN: usize = 16;
 
 #[derive(Deserialize, Serialize, Debug, Default)]
@@ -80,7 +78,7 @@ fn authenticate(username: &str, password: &str) -> Option<User> {
     
     info!("Authenticating user: {}", username);
 
-    let conn = match Connection::connect(SQL_USERNAME,SQL_PASSWORD, ""){
+    let conn = match Connection::connect(ORACLE_USER,ORACLE_PASS, ORACLE_CON_STR){
         Ok(c) => c,
         Err(e) => {
             error!("unable to open connection to server: {}", e);
@@ -130,7 +128,7 @@ fn authenticate(username: &str, password: &str) -> Option<User> {
 fn create_user(username: &str, password: &str, first_name: &str, last_name: &str) -> Result<(), Error> {
 
     info!("Creating user: {}", username); 
-    let conn = Connection::connect(SQL_USERNAME, SQL_PASSWORD, "")?;
+    let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
     let mut stmt = conn.statement("insert into student values(:net_id, :first_name, :last_name, :pswd, :salt)").build()?;
 
     let salt: String = rand::thread_rng().sample_iter(&Alphanumeric).take(SALT_LEN).map(char::from).collect();

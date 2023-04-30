@@ -2,9 +2,7 @@ use serde::{Serialize, Deserialize};
 use actix_web::{web::Path, Responder, HttpResponse, web::Json};
 use oracle::Connection;
 use log::error;
-
-const ORACLE_USER: &str = "timmy";
-const ORACLE_PASS: &str = "timmy";
+use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FoodItem {
@@ -43,7 +41,7 @@ pub async fn menu(eatery: Path<String>) -> Json<Vec<FoodItem>> {
 
 fn grab_rows(eatery: String) -> oracle::Result<Vec<FoodItem>> {
 
-    let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, "")?;
+    let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
 
     let mut stmt = conn.statement("select * from menu_item natural join nutrition_info where eatery_id = :1").build()?;
 
