@@ -3,6 +3,7 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import { CardMedia, CardContent } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -33,21 +34,34 @@ const theme = createTheme({
   });
 
 function Menus() {
- 
+    const navigate = useNavigate();
+
+	const Home = () => {
+		 navigate('/Plan');
+	}
+    const Menus = () => {
+        navigate('/Menus');
+   }
+   const Past = () => {
+    navigate('/Past');
+}
+const navigateLogin = () => {
+    navigate('/');
+}
 
   return (
 
     <ThemeProvider theme={theme}>
-    <AppBar position="static">
+    <AppBar className='bar' position="static">
   <Toolbar variant="dense">
-  <Button  variant="h6" color="main" position="right">
+  <Button  variant="h6" color="main" position="right" onClick={Home}>
    Home</Button> 
-    <Button variant="h6" color="main" component="div">
+    <Button variant="h6" color="main" component="div" onClick={Menus}>
       Menus
     </Button>
-    <Button  variant="h6" >
+    <Button  variant="h6" onClick="Past">
     Past Plans</Button> 
-    <Button variant="h6" color="main" component="div" sx={{
+    <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
     ':hover': {
       bgcolor: '#ffc6c4', // theme.palette.primary.main
       color: 'red',
@@ -55,9 +69,151 @@ function Menus() {
   }}>
         Log out
     </Button>
-   
   </Toolbar>
 </AppBar>
+
+<Box sx={{  
+          margin: 8,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}>
+<Box sx={{  
+        
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+<Card sx={{ maxWidth: 200, margin: 2 }}>
+      <CardMedia
+        image={ require("./images/south.jpg")}
+        title="South Dining Hall"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Dining Hall
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+
+      <Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/starb.jpg")}
+        title="Starbucks"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Starbucks
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+      </Box>
+
+      <Box sx={{  
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+<Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/abp.jpg")}
+        title="ABP"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          ABP
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+
+      <Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/chick.jpg")}
+        title="Chick"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Chick-fil-a
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+      </Box>
+      <Box sx={{  
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+<Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/flip.jpg")}
+        title="Flip"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Flip Kitchen
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+
+      <Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/moma.jpg")}
+        title="Moma"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Modern Market
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+      </Box>
+      <Box sx={{  
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+<Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/taco.jpg")}
+        title="Taco Bell"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Taco Bell
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+
+      <Card sx={{ maxWidth: 200, margin: 2  }}>
+      <CardMedia
+        image={ require("./images/smash.jpg")}
+        title="smash"
+        sx={{ width: 200, height:170}}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Smashburger
+        </Typography>
+        <Button>View Items</Button>
+      </CardContent>
+      </Card>
+      </Box>
+      </Box>
+
 </ThemeProvider>
   
   );
