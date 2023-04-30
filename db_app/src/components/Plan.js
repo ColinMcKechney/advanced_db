@@ -83,6 +83,9 @@ function weekStart(){
   return db_date;
 }
 
+const net_id = ReactSession.get("net_id");
+
+//to set nutritional goal for the week
 const [goalInput, setGoalInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -100,7 +103,6 @@ const [goalInput, setGoalInput] = useReducer(
     }
 );
 
-const net_id = ReactSession.get("net_id");
 
 const handleSubmit = evt => {
   let data = {goalInput}
@@ -221,7 +223,7 @@ const handleSubmit = evt => {
     
     <div>
       <h2>
-          &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp;
         So Far This Week:
       </h2>
 
