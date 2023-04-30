@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
+import Axios from 'axios';
 
 
 const theme = createTheme({
@@ -57,6 +58,15 @@ const navigateLogin = () => {
     navigate('/');
 }
 
+const makeEateryUrl = (eatery) => `http://3.219.93.142:8000/eatery/${eatery}`;
+
+const getMenu = () => {
+  const eatery_to_query = getEatery();
+  Axios.get(makeEateryUrl(eatery_to_query)).then((response) => {
+     console.log(response.data);
+  });
+};
+
 
 
 
@@ -84,6 +94,8 @@ return(
     </Button>
   </Toolbar>
 </AppBar>
+
+<Button onClick={getMenu}>Test get menu</Button>
 </ThemeProvider>
 )
 

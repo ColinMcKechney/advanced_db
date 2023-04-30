@@ -16,6 +16,7 @@ import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import image from "./images/main_background.jpg"
 import { ReactSession } from 'react-client-session';
+import { CardMedia, CardContent } from '@mui/material';
 
 const theme = createTheme({
     palette: {
@@ -51,8 +52,6 @@ const [data,setData] = useState({
   
   const submitHandler = e => {
     e.preventDefault();
-    console.log(data);
-    console.log(net_id[0])
     login();
     
   }
@@ -96,7 +95,19 @@ const login = () => {
         }}
       >
         <Typography component="h1" variant="h5">Log In</Typography>
-         
+        <div className='logbox2'>
+        <Card sx={{ width:300, height:100 }}>
+        <CardMedia
+          component='Box'
+          image={ require("./images/logo.jpg")}
+          title="Logo"
+          sx={{ width: 300, height:100}}
+          alt="logo"
+        
+        />
+        </Card>
+        </div>
+       
           
         <form className='formbox' onSubmit={submitHandler}>
         <TextField
