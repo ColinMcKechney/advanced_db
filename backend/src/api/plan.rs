@@ -7,6 +7,7 @@ use crate::config::{ORACLE_PASS, ORACLE_USER, ORACLE_CON_STR};
 #[derive(Deserialize, Serialize, Debug, Default)]
 pub struct PlanData{
     net_id: String,
+    week_date: String,
     total_cal: Option<f32>,
     total_fat: Option<f32>,
     total_sat_fat: Option<f32>,
@@ -36,10 +37,11 @@ fn create_plan(plan: PlanData) -> Result<()> {
 
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
 
-    let mut stmt = conn.statement("insert into goal values(:net_id, :total_cal, :total_fat, :total_sat_fat, :total_trans_fat, :total_carbs, :total_fiber, :total_sugar, :total_protein, :total_sodium, :total_potassium, :total_cholesterol)").build()?;
+    let mut stmt = conn.statement("insert into goal values(:net_id, :week_date, :total_cal, :total_fat, :total_sat_fat, :total_trans_fat, :total_carbs, :total_fiber, :total_sugar, :total_protein, :total_sodium, :total_potassium, :total_cholesterol)").build()?;
 
     stmt.execute_named(&[
     ("net_id", &plan.net_id), 
+    ("week_date", &plan.week_date),
     ("total_cal", &plan.total_cal), 
     ("total_fat", &plan.total_fat),
     ("total_sat_fat", &plan.total_sat_fat),
