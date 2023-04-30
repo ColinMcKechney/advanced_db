@@ -154,7 +154,7 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
         }
     };
     
-    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), foreign key (item_id) references menu_item (id))", username).as_str()).build()?;
+    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), amount number(5), foreign key (item_id) references menu_item (id))", username).as_str()).build()?;
 
     match new_table.execute(&[]) {
         Ok(_) => {
