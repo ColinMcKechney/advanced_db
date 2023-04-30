@@ -1,4 +1,4 @@
-import React,{useState, useReducer} from 'react';
+import React,{useState} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -87,9 +87,7 @@ function weekStart(){
 const net_id = ReactSession.get("net_id");
 
 //to set nutritional goal for the week
-const [goalInput, setGoalInput] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
+const [goalInput, setGoalInput] = useState({
       total_cal: "",
       total_fat: "",
       total_sat_fat: "",
@@ -104,12 +102,63 @@ const [goalInput, setGoalInput] = useReducer(
     }
 );
 
+const{total_cal, total_fat, total_sat_fat, total_trans_fat, total_carbs, total_fiber, 
+  total_sugar, total_protein, total_sodium, total_potassium, total_cholesterol} = goalInput
 
-const handleSubmit = evt => {
-  let data = {goalInput}
-
-  Axios.post()
+const changeGoalHandler = evt =>{
+  setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
 }
+
+const submitGoalHandler = evt => {
+  evt.preventDefault();
+  console.log(goalInput)
+  Axios.post("http://3.219.93.142:8000/api/",
+    {
+      total_cal: total_cal[0],
+      total_fat: total_fat[0],
+      total_sat_fat: total_sat_fat[0],
+      total_trans_fat: total_trans_fat[0],
+      total_carbs: total_carbs[0],
+      total_fiber: total_fiber[0],
+      total_sugar: total_sugar[0],
+      total_protein: total_protein[0],
+      total_sodium: total_sodium[0],
+      total_potassium: total_potassium[0],
+      total_cholesterol: total_cholesterol[0]
+    }).then((response) => {
+      console.log(response);
+      console.log(response.status);
+    })
+};
+
+
+//to add an off campus food item or meal to your weekly journal
+  const [offCampusInput, setOffCampusInput] = useState({
+    calories: "",
+    fat_g: "",
+    sat_fat_g: "",
+    trans_fat_g: "",
+    carbs_g: "",
+    fiber_g: "",
+    sugar_g: "",
+    protein_g: "",
+    sodium_g: "",
+    potassium_g: "",
+    cholesterol_g: "",
+  }
+  );
+
+  const { calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
+    sodium_g, potassium_g, cholesterol_g, } = offCampusInput
+
+  const changeoffCampusHandler = evt => {
+    setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
+  }
+
+  const submitoffCampusHandler = evt => {
+    evt.preventDefault();
+  };
+
   
   return (
   <ThemeProvider theme={theme}>  
@@ -140,74 +189,107 @@ const handleSubmit = evt => {
       <h1>&nbsp; Your Plan</h1>
       <h2>&nbsp; &nbsp;Goal for the week of: </h2>
 
-      <form>
+      <form onSubmit={submitGoalHandler}>
       &nbsp; &nbsp;
       <TextField
         sx={{ paddingBottom: 1 }}
-        id="calorie-input"
+        id="total_cal"
         label="Calories"
+        name="total_cal"
+        value={total_cal}
         size ="small"
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="fat-input"
+        id="total_fat"
         label="Fat (g)"
+        name="total_fat"
+        value={total_fat}
         size="small"
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="saturated_fat-input"
+        id="total_sat_fat"
         label="Saturated Fat (g)"
         size="small"
+        name="total_sat_fat"
+        value={total_sat_fat}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="trans_fat-input"
+        id="total_trans_fat"
         label="Trans Fat (g)"
         size="small"
+        name="total_trans_fat"
+        value={total_trans_fat}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="carbs-input"
+        id="total_carbs"
         label="Carbs (g)"
-        size="small" 
+        size="small"
+        name="total_carbs"
+        value={total_carbs} 
+        onChange={changeGoalHandler}
       />
       <br></br>
       &nbsp; &nbsp;
       <TextField
-        id="fiber-input"
+        id="total_fiber"
         label="Fiber (g)"
         size="small"
+        name="total_fiber"
+        value={total_fiber}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="sugar-input"
+        id="total_sugar"
         label="Sugar (g)"
         size="small"
+        name="total_sugar"
+        value={total_sugar}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="protein-input"
+        id="total_protein"
         label="Protein (g)"
         size="small"
+        name="total_protein"
+        value={total_protein}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="sodium-input"
+        id="total_sodium"
         label="Sodium (mg)"
         size="small"
+        name="total_sodium"
+        value={total_sodium}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="potassium-input"
+        id="total_potassium"
         label="Potassium (mg)"
         size="small"
+        name="total_potassium"
+        value={total_potassium}
+        onChange={changeGoalHandler}
       />
       &nbsp; &nbsp;
       <TextField
-        id="cholesterol-input"
+        id="total_cholesterol"
         label="Cholesterol (mg)"
         size="small"
+        name="total_cholesterol"
+        value={total_cholesterol}
+        onChange={changeGoalHandler}
       />
       <br></br>
       <br></br>
@@ -237,7 +319,7 @@ const handleSubmit = evt => {
           <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: 90 }}  align="lect">Food</TableCell>
+              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
               <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
               <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
               <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
