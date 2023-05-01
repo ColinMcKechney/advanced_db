@@ -29,11 +29,6 @@ pub struct MenuItems {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct WeekData{
-    week: Vec<ItemResult>
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ItemResult{
     item_id: Option<u32>,
     amount: Option<u32>,
@@ -76,7 +71,7 @@ pub async fn week_meals(items: Json<MenuItems>) -> impl Responder {
     }
 }
 
-pub async fn week_lookup(net_id: Path<String>) -> Json<WeekData> {
+pub async fn week_lookup(net_id: Path<String>) -> Json<Vec<ItemResult>> {
 
     let net_id = net_id.into_inner();
 
@@ -84,7 +79,7 @@ pub async fn week_lookup(net_id: Path<String>) -> Json<WeekData> {
         Ok(week) => Json(week),
         Err(e) => {
             error!("failed to grab week info from {}: {}", net_id, e);
-            Json(WeekData::default())
+            Json(vec![])
         }
     }
 
@@ -162,17 +157,17 @@ fn add_menu_items(items: MenuItems) -> Result<()> {
 }
 
 
-fn get_week(net_id: &str) -> Result<WeekData> {
+fn get_week(net_id: &str) -> Result<Vec<ItemResult>> {
     
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
     let mut stmt = conn.statement(format!("select * from {}", net_id).as_str()).build()?;
 
     let rows = stmt.query(&[])?;
-    let mut week = WeekData::default();
+    let mut week = vec![];
 
     for row_result in rows {
         let row = row_result?;
-        week.week.push( ItemResult { 
+        week.push( ItemResult { 
             item_id: row.get(0).unwrap_or(None), 
             amount: row.get(1).unwrap_or(None),
             item_name: row.get(2).unwrap_or(None),
@@ -188,7 +183,6 @@ fn get_week(net_id: &str) -> Result<WeekData> {
             potassium_mg: row.get(12).unwrap_or(None),
             cholesterol_mg: row.get(13).unwrap_or(None) });
     }
-
     Ok(week)
 
 
