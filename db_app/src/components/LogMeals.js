@@ -80,84 +80,39 @@ function weekStart(){
 
 const net_id = ReactSession.get("net_id");
 
-//to set nutritional goal for the week
-const [goalInput, setGoalInput] = useState({
-      total_cal: 0,
-      total_fat: 0,
-      total_sat_fat: 0,
-      total_trans_fat: 0,
-      total_carbs: 0,
-      total_fiber: 0,
-      total_sugar: 0,
-      total_protein: 0,
-      total_sodium: 0,
-      total_potassium: 0,
-      total_cholesterol: 0,
-    }
-);
 
-const{total_cal, total_fat, total_sat_fat, total_trans_fat, total_carbs, total_fiber, 
-  total_sugar, total_protein, total_sodium, total_potassium, total_cholesterol} = goalInput
-
-const changeGoalHandler = evt =>{
-  setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
-}
-
-const submitGoalHandler = evt => {
-  evt.preventDefault();
-  console.log(goalInput)
-  console.log(net_id)
-  console.log(weekStart())
-  Axios.post("http://3.219.93.142:8000/api/goal",
-    {
-      net_id: net_id,
-      week_date: weekStart(),
-      total_cal: Number(total_cal[0]),
-      total_fat: Number(total_fat[0]),
-      total_sat_fat: Number(total_sat_fat[0]),
-      total_trans_fat: Number(total_trans_fat[0]),
-      total_carbs: Number(total_carbs[0]),
-      total_fiber: Number(total_fiber[0]),
-      total_sugar: Number(total_sugar[0]),
-      total_protein: Number(total_protein[0]),
-      total_sodium: Number(total_sodium[0]),
-      total_potassium: Number(total_potassium[0]),
-      total_cholesterol: Number(total_cholesterol[0])
-    }).then((response) => {
-      console.log(response);
-      console.log(response.status);
-    })
-};
 
 //to find a food item from an on campus location to your weekly journal
 const [keyword, setKeyword] = useState({
   search_term:""
 })
 
-const [searchItems, setSearchItems] = useState([{}]);
+const [searchItems, setSearchItems] = useState([]);
+const [sendItems, setSendItems] = useState([{}]);
+
 
 const{search_term} = keyword
 
 const removeItem = (index) => {
-  setSearchItems([
-             ...searchItems.slice(0, index),
-             ...searchItems.slice(index + 1)
+  setSendItems([
+             ...sendItems.slice(0, index),
+             ...sendItems.slice(index + 1)
   ]);
 
 }
 
 function handleCheck (i) {
   console.log(i);
-  if (searchItems.indexOf(i) > -1){
+  if (sendItems.indexOf(i) > -1){
     //get index and delete
-    var index = searchItems.indexOf(i)
+    var index = sendItems.indexOf(i)
     removeItem(index);
     console.log(`removed ${i}`);
     
   }
 
   else{
-    setSearchItems(searchItems => [...searchItems, i]);
+    setSendItems(sendItems => [...sendItems, i]);
     console.log(`added ${i}`);
   }
   
@@ -178,8 +133,9 @@ const submitSearchHandler = evt => {
     }).then((response) => {
       console.log(response);
       console.log(response.status);
-      console.log(response.data);
-      setSearchItems(response.data);
+      console.log('Data:')
+      console.log(response.data.results);
+      setSearchItems(response.data.results);
     })
 };
 
@@ -334,9 +290,6 @@ color: 'main',
                       color="primary"
                       onChange={() => handleCheck(searchitem.item_id)}
                     />
-                    </TableCell>
-                    <TableCell>
-                      {searchitem.item_name}
                     </TableCell>
         
               <TableCell> {searchitem.eatery_id}</TableCell>

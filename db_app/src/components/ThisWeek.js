@@ -94,79 +94,8 @@ function weekStart(){
 
 const net_id = ReactSession.get("net_id");
 
-//to set nutritional goal for the week
-const [goalInput, setGoalInput] = useState({
-      total_cal: "",
-      total_fat: "",
-      total_sat_fat: "",
-      total_trans_fat: "",
-      total_carbs: "",
-      total_fiber: "",
-      total_sugar: "",
-      total_protein: "",
-      total_sodium: "",
-      total_potassium: "",
-      total_cholesterol: "",
-    }
-);
 
-const{total_cal, total_fat, total_sat_fat, total_trans_fat, total_carbs, total_fiber, 
-  total_sugar, total_protein, total_sodium, total_potassium, total_cholesterol} = goalInput
-
-const changeGoalHandler = evt =>{
-  setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
-}
-
-const submitGoalHandler = evt => {
-  evt.preventDefault();
-  console.log(goalInput)
-  Axios.post("http://3.219.93.142:8000/api/",
-    {
-      total_cal: total_cal[0],
-      total_fat: total_fat[0],
-      total_sat_fat: total_sat_fat[0],
-      total_trans_fat: total_trans_fat[0],
-      total_carbs: total_carbs[0],
-      total_fiber: total_fiber[0],
-      total_sugar: total_sugar[0],
-      total_protein: total_protein[0],
-      total_sodium: total_sodium[0],
-      total_potassium: total_potassium[0],
-      total_cholesterol: total_cholesterol[0]
-    }).then((response) => {
-      console.log(response);
-      console.log(response.status);
-    })
-};
-
-
-//to add an off campus food item or meal to your weekly journal
-  const [offCampusInput, setOffCampusInput] = useState({
-    calories: "",
-    fat_g: "",
-    sat_fat_g: "",
-    trans_fat_g: "",
-    carbs_g: "",
-    fiber_g: "",
-    sugar_g: "",
-    protein_g: "",
-    sodium_g: "",
-    potassium_g: "",
-    cholesterol_g: "",
-  }
-  );
-
-  const { calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
-    sodium_g, potassium_g, cholesterol_g, } = offCampusInput
-
-  const changeoffCampusHandler = evt => {
-    setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
-  }
-
-  const submitoffCampusHandler = evt => {
-    evt.preventDefault();
-  };
-
+  //Get history of items for this week
   const [pastItems, setPastItems] = useState([{}]);
   const makeURL = (net_id) => `http://3.219.93.142:8000/api/week_progress/${net_id}`;
 
@@ -179,28 +108,47 @@ const submitGoalHandler = evt => {
     });
      
     }
-    useEffect(() => {
-        getHistory()
-        console.log('History in')
-      }, [])
-
-      const [sum, setSum] = useState([{}]);
-      const sumURL = (net_id) => `http://3.219.93.142:8000/api/week_sum/${net_id}`;
+      //Get sum of totals for weekly plan (progress)
+    const [goals, setGoals] = useState([{}]);
+    const goalURL = (net_id) => `http://3.219.93.142:8000/api/week_goal/${net_id}`;
     
-      const getSum = () => {
+      const getGoal = () => {
         const net_id = ReactSession.get("net_id");
-        const url_to_query = sumURL(net_id);
+        const url_to_query = goalURL(net_id);
          Axios.get(url_to_query).then((response) => {
           console.log(response.data);
-          setSum(response.data);
+          setGoals(response.data);
         });
          
         }
+
+        //Get weekly plan goals
+        const [sum, setSum] = useState([{}]);
+        const sumURL = (net_id) => `http://3.219.93.142:8000/api/week_sum/${net_id}`;
+      
+        const getSum = () => {
+          const net_id = ReactSession.get("net_id");
+          const url_to_query = sumURL(net_id);
+           Axios.get(url_to_query).then((response) => {
+            console.log(response.data);
+            setSum(response.data);
+          });
+           
+          }
+
+
+    const [cals, setCals] = useState([{}]);
+    const [fat, setFat] = useState([{}]);
+    const [trans, setTrans] = useState([{}]);
+
+    //Run getSum, getHistory, and getPlan on page load
         useEffect(() => {
             getHistory()
             console.log('History in')
             getSum()
             console.log('Sum in')
+            getGoal()
+            console.log('Goal in')
           }, [])
        
   
