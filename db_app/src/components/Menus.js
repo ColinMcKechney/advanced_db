@@ -109,7 +109,7 @@ const menuExpansion = () => {
     <Button variant="h6" color="main" component="div" onClick={Menus}>
       Menus
     </Button>
-    <Button  variant="h6" onClick="Past">
+    <Button  variant="h6" onClick={Past}>
     Past Plans</Button> 
     <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
     ':hover': {

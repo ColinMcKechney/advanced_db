@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -22,7 +22,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
-import { Axios } from 'axios';
+import Axios from 'axios';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -167,6 +167,42 @@ const submitGoalHandler = evt => {
     evt.preventDefault();
   };
 
+  const [pastItems, setPastItems] = useState([{}]);
+  const makeURL = (net_id) => `http://3.219.93.142:8000/api/week_progress/${net_id}`;
+
+  const getHistory = () => {
+    const net_id = ReactSession.get("net_id");
+    const url_to_query = makeURL(net_id);
+     Axios.get(url_to_query).then((response) => {
+      console.log(response.data);
+      setPastItems(response.data);
+    });
+     
+    }
+    useEffect(() => {
+        getHistory()
+        console.log('History in')
+      }, [])
+
+      const [sum, setSum] = useState([{}]);
+      const sumURL = (net_id) => `http://3.219.93.142:8000/api/week_sum/${net_id}`;
+    
+      const getSum = () => {
+        const net_id = ReactSession.get("net_id");
+        const url_to_query = sumURL(net_id);
+         Axios.get(url_to_query).then((response) => {
+          console.log(response.data);
+          setSum(response.data);
+        });
+         
+        }
+        useEffect(() => {
+            getHistory()
+            console.log('History in')
+            getSum()
+            console.log('Sum in')
+          }, [])
+       
   
   return (
   <ThemeProvider theme={theme}>  
@@ -209,216 +245,132 @@ const submitGoalHandler = evt => {
 </Toolbar>
   </AppBar>
 
-    <div>
-      <h1>&nbsp; Your Plan</h1>
-      <h2>&nbsp; &nbsp;Goal for the week of: </h2>
-
-      <form onSubmit={submitGoalHandler}>
-      &nbsp; &nbsp;
-      <TextField
-        sx={{ paddingBottom: 1 }}
-        id="total_cal"
-        label="Calories"
-        name="total_cal"
-        value={total_cal}
-        size ="small"
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_fat"
-        label="Fat (g)"
-        name="total_fat"
-        value={total_fat}
-        size="small"
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_sat_fat"
-        label="Saturated Fat (g)"
-        size="small"
-        name="total_sat_fat"
-        value={total_sat_fat}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_trans_fat"
-        label="Trans Fat (g)"
-        size="small"
-        name="total_trans_fat"
-        value={total_trans_fat}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_carbs"
-        label="Carbs (g)"
-        size="small"
-        name="total_carbs"
-        value={total_carbs} 
-        onChange={changeGoalHandler}
-      />
-      <br></br>
-      &nbsp; &nbsp;
-      <TextField
-        id="total_fiber"
-        label="Fiber (g)"
-        size="small"
-        name="total_fiber"
-        value={total_fiber}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_sugar"
-        label="Sugar (g)"
-        size="small"
-        name="total_sugar"
-        value={total_sugar}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_protein"
-        label="Protein (g)"
-        size="small"
-        name="total_protein"
-        value={total_protein}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_sodium"
-        label="Sodium (mg)"
-        size="small"
-        name="total_sodium"
-        value={total_sodium}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_potassium"
-        label="Potassium (mg)"
-        size="small"
-        name="total_potassium"
-        value={total_potassium}
-        onChange={changeGoalHandler}
-      />
-      &nbsp; &nbsp;
-      <TextField
-        id="total_cholesterol"
-        label="Cholesterol (mg)"
-        size="small"
-        name="total_cholesterol"
-        value={total_cholesterol}
-        onChange={changeGoalHandler}
-      />
-      <br></br>
-      <br></br>
-      &nbsp; &nbsp;
-
-      <Button 
-      type="submit" 
-      variant="contained"
-      size = "large">
-      Submit</Button>
-      </form>
-    </div>
-    <br></br>
     
     <div>
-      <h2>
-        &nbsp; &nbsp;
+      <h1>
+      &nbsp;
         So Far This Week:
-      </h2>
+      </h1>
 
       <h3>
         &nbsp; &nbsp;
         Foods Eaten
       </h3>
 
-      <TableContainer component={Paper}>
-          <Table stickyHeader>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer component={Paper} sx={{margin: 5, maxHeight: 200, maxWidth:1400}}>
+          <Table stickyHeader sx={{maxWidth:1400}}>
           <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Protein&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
+            <TableRow sx={{maxWidth:1400}}>
+            
+        
+              <TableCell style={{ maxWidth: 110}}  align="left">Food</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Calories</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 50 }} align="left">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fiber&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Protein&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 80 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            <TableRow>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
+          <TableBody sx={{maxWidth:1350}}>
+            {pastItems.map((pastitem, i) => {
+              console.log(i);
+              return(
+                <TableRow
+                    key={pastitem.item_name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                  
+                    <TableCell>
+                      {pastitem.item_name}
+                    </TableCell>
+        
+              <TableCell> {pastitem.calories}</TableCell>
+              <TableCell> {pastitem.fat_g}</TableCell>
+              <TableCell> {pastitem.sat_fat_g}</TableCell>
+              <TableCell> {pastitem.trans_fat_g}</TableCell>
+              <TableCell> {pastitem.carbs_g}</TableCell>
+              <TableCell> {pastitem.fiber_g}</TableCell>
+              <TableCell>{pastitem.sugar_g} </TableCell>
+              <TableCell> {pastitem.protein_g}</TableCell>
+              <TableCell>{pastitem.sodium_mg} </TableCell>
+              <TableCell> {pastitem.potassium_mg}</TableCell>
+              <TableCell> {pastitem.cholesterol_mg}</TableCell>
             </TableRow>
+            )
+          })}
           </TableBody>
         </Table>
       </TableContainer>
+      </Paper>
+
     
       <h3>
         &nbsp; &nbsp;
         Weekly Totals
       </h3>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ maxWidth: 1200 }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer component={Paper} sx={{margin: 5, maxHeight: 200, maxWidth:1400}}>
+          <Table stickyHeader sx={{maxWidth:1400}}>
           <TableHead>
-            <TableRow>
-              <TableCell align="left">Calories</TableCell>
-              <TableCell align="left">Fat&nbsp;(g)</TableCell>
-              <TableCell align="left">Saturated Fat&nbsp;(g)</TableCell>
-              <TableCell align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="left">Fiber&nbsp;(g)</TableCell>
-              <TableCell align="left">Sugar&nbsp;(g)</TableCell>
-              <TableCell align="left">Protein&nbsp;(g)</TableCell>
-              <TableCell align="left">Sodium&nbsp;(mg)</TableCell>
-              <TableCell align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell align="left">Cholesterol&nbsp;(mg)</TableCell>
+            <TableRow sx={{maxWidth:1400}}>
+            
+    
+              <TableCell style={{ maxWidth: 90 }} align="left">Calories</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 50 }} align="left">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fiber&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Protein&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 80 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            <TableRow>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
+          <TableBody sx={{maxWidth:1350}}>
+                <TableRow
+                    key={sum.item_name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                  
+            
+        
+              <TableCell> {sum.calories}</TableCell>
+              <TableCell> {sum.fat_g}</TableCell>
+              <TableCell> {sum.sat_fat_g}</TableCell>
+              <TableCell> {sum.trans_fat_g}</TableCell>
+              <TableCell> {sum.carbs_g}</TableCell>
+              <TableCell> {sum.fiber_g}</TableCell>
+              <TableCell>{sum.sugar_g} </TableCell>
+              <TableCell> {sum.protein_g}</TableCell>
+              <TableCell>{sum.sodium_mg} </TableCell>
+              <TableCell> {sum.potassium_mg}</TableCell>
+              <TableCell> {sum.cholesterol_mg}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
+      </Paper>
 
       <br></br>
-      <Stack direction="row" spacing={2}>
+      <h4>
         &nbsp; &nbsp;
+        At a glance
+      </h4>
+
+      <Stack direction="row" spacing={2}>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         <Chip label="Calories" variant="outlined"/>
         <Chip label="Fat" variant="outlined"/>
         &nbsp; &nbsp;
@@ -442,136 +394,7 @@ const submitGoalHandler = evt => {
       </Stack>
     </div>
 
-    <div>
-      <h2>
-        &nbsp; &nbsp;
-        Add to Food Journal
-      </h2>
-      <h3> &nbsp; &nbsp;
-        On-Campus
-      </h3>
-      <form>
-          &nbsp; &nbsp;
-          <FormControl sx={{minWidth:170 }}>
-            <InputLabel id="dining-location-select-label">Dining Location</InputLabel>
-            <Select labelId="dining-location-select-label" id="dining-location-select" label="Dining Location">
-              <MenuItem>DH</MenuItem>
-              <MenuItem>Chick-fil-a</MenuItem>
-              <MenuItem>Smashburger</MenuItem>
-              <MenuItem>Flip Kitchen</MenuItem>
-              <MenuItem>ABP</MenuItem>
-              <MenuItem>Starbucks</MenuItem>
-              <MenuItem>Modern Market</MenuItem>
-              <MenuItem>Taco Bell</MenuItem>
-            </Select>
-          </FormControl>
-
-          &nbsp; &nbsp;
-          <TextField
-            id="keywordsearch"
-            label="Keyword"
-            size="medium"
-          />
-
-          &nbsp; &nbsp;
-          <Button sx={{ m: 1}}
-            type="search"
-            variant="contained"
-            size="medium">
-          Search</Button>
-      </form>
-
-      <h3> &nbsp; &nbsp;
-        Off-Campus
-      </h3>
-        <form>
-          &nbsp; &nbsp;
-          <TextField
-            sx={{ paddingBottom: 1 }}
-            id="food-input"
-            label="Food Item"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            sx={{ paddingBottom: 1 }}
-            id="calorie-input"
-            label="Calories"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="fat-input"
-            label="Fat (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="saturated_fat-input"
-            label="Saturated Fat (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="trans_fat-input"
-            label="Trans Fat (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="carbs-input"
-            label="Carbs (g)"
-            size="small"
-          />
-          <br></br>
-          &nbsp; &nbsp;
-          <TextField
-            id="fiber-input"
-            label="Fiber (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="sugar-input"
-            label="Sugar (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="protein-input"
-            label="Protein (g)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="sodium-input"
-            label="Sodium (mg)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="potassium-input"
-            label="Potassium (mg)"
-            size="small"
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="cholesterol-input"
-            label="Cholesterol (mg)"
-            size="small"
-          />
-          <br></br>
-          <br></br>
-          &nbsp; &nbsp;
-
-          <Button
-            type="submit"
-            variant="contained"
-            size="large">
-            Submit</Button>
-        </form>
-
-    </div>
+    
     </ThemeProvider>
   
     );

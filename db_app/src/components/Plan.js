@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import './Login.css';
 import Button from "@mui/material/Button";
@@ -11,7 +11,7 @@ import { ReactSession } from 'react-client-session';
 import Axios from 'axios';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper,Checkbox} from '@mui/material';
 
 
 const theme = createTheme({
@@ -19,7 +19,6 @@ const theme = createTheme({
       primary: {
         main: lightGreen[700],
         apple: red[500],
-        main2: '#588157',
       },
 
     },
@@ -56,7 +55,10 @@ const Progress = () => {
   navigate('/ThisWeek')
 }
 
-
+const [week, setWeek] = useState();
+const displayWeek = () => {
+  setWeek(() => weekStart());
+}
 
 //get the start of each week and reformat to Oracle date type
 function weekStart(){
@@ -135,7 +137,35 @@ const [keyword, setKeyword] = useState({
   search_term:""
 })
 
+const [searchItems, setSearchItems] = useState([{}]);
+
 const{search_term} = keyword
+
+const removeItem = (index) => {
+  setSearchItems([
+             ...searchItems.slice(0, index),
+             ...searchItems.slice(index + 1)
+  ]);
+
+}
+
+function handleCheck (i) {
+  console.log(i);
+  if (searchItems.indexOf(i) > -1){
+    //get index and delete
+    var index = searchItems.indexOf(i)
+    removeItem(index);
+    console.log(`removed ${i}`);
+    
+  }
+
+  else{
+    setSearchItems(searchItems => [...searchItems, i]);
+    console.log(`added ${i}`);
+  }
+  
+}
+
 
 const changeSearchHandler = evt => {
   setKeyword({ ...keyword, [evt.target.name]: [evt.target.value] })
@@ -152,6 +182,7 @@ const submitSearchHandler = evt => {
       console.log(response);
       console.log(response.status);
       console.log(response.data);
+      setSearchItems(response.data);
     })
 };
 
@@ -206,6 +237,12 @@ const submitSearchHandler = evt => {
         console.log(response.status);
       })
   };
+
+  useEffect(() => {
+    displayWeek()
+    console.log('week calculated')
+  }, []);
+   
   
   return (
   <ThemeProvider theme={theme}>  
@@ -232,8 +269,8 @@ const submitSearchHandler = evt => {
       </AppBar>
 
 
-    <AppBar color='main2' className='bar' position="static">
-<Toolbar color='main2'>
+    <AppBar className='bar' position="static">
+<Toolbar >
 <Button variant="h2" color="main" onClick={Home}sx={{
 
             bgcolor: '#053B06', // theme.palette.primary.main
@@ -250,7 +287,7 @@ const submitSearchHandler = evt => {
 
     <div>
       <h1>&nbsp; Your Plan</h1>
-      <h2>&nbsp; &nbsp;Goal for the week of: </h2>
+      <h2>&nbsp; &nbsp;Goal for the week of: {week}</h2>
 
       <form onSubmit={submitGoalHandler}>
       &nbsp; &nbsp;
@@ -378,295 +415,9 @@ const submitSearchHandler = evt => {
     </div>
     <br></br>
     
-    <div>
-      <h2>
-        &nbsp; &nbsp;
-        So Far This Week:
-      </h2>
+   
 
-      <h3>
-        &nbsp; &nbsp;
-        Foods Eaten
-      </h3>
-
-      <TableContainer component={Paper}>
-          <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Protein&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            <TableRow>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
     
-      <br></br>
-      <Stack direction="row" spacing={2}>
-        &nbsp; &nbsp;
-        <Chip label="Calories" variant="outlined"/>
-        <Chip label="Fat" variant="outlined"/>
-        &nbsp; &nbsp;
-        <Chip label="Saturated Fat" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp;
-        <Chip label="Trans Fat" variant="outlined"/>
-        &nbsp; &nbsp;
-        <Chip label="Carbs" variant="outlined"/>
-        &nbsp; &nbsp;
-        <Chip label="Fiber" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp;
-        <Chip label="Sugar" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp;
-        <Chip label="Protein" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp;
-        <Chip label="Sodium" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <Chip label="Potassium" variant="outlined"/>
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <Chip label="Cholesterol" variant="outlined"/>
-      </Stack>
-    </div>
-
-    <div>
-      <h2>
-        &nbsp; &nbsp;
-        Add to Food Journal
-      </h2>
-      <h3> &nbsp; &nbsp;
-        On-Campus
-      </h3>
-      <form onSubmit={submitSearchHandler}>
-          &nbsp; &nbsp;
-          <TextField
-            id="search_term"
-            label="Keyword"
-            size="medium"
-            name="search_term"
-            value={search_term}
-            onChange={changeSearchHandler}
-          />
-
-          &nbsp; &nbsp;
-          <Button sx={{ m: 1}}
-            type="search"
-            variant="contained"
-            size="medium">
-          Search</Button>
-      </form>
-
-      <TableContainer component={Paper}>
-          <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Protein&nbsp;(g)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell style={{ width: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            <TableRow>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    
-
-      <h3> &nbsp; &nbsp;
-        Off-Campus
-      </h3>
-        <form onSubmit={submitOffCampusHandler}>
-          &nbsp; &nbsp;
-          <TextField
-            sx={{ paddingBottom: 1 }}
-            id="item_name"
-            label="Food Item"
-            size="small"
-            name="item_name"
-            value={item_name}
-            onChange={changeOffCampusHandler}
-          />
-          <br></br>
-          &nbsp; &nbsp;
-          <TextField
-            id="amount"
-            label="Number of Servings"
-            size="small"
-            name="amount"
-            type="number"
-            value={amount}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            sx={{ paddingBottom: 1 }}
-            id="calories"
-            label="Calories"
-            size="small"
-            name="calories"
-            type="number"
-            value={calories}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="fat"
-            label="Fat (g)"
-            size="small"
-            name="fat_g"
-            type="number"
-            value={fat_g}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="sat_fat"
-            label="Saturated Fat (g)"
-            size="small"
-            name="sat_fat_g"
-            type="number"
-            value={sat_fat_g}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="trans_fat"
-            label="Trans Fat (g)"
-            size="small"
-            name="trans_fat_g"
-            type="number"
-            value={trans_fat_g}
-            onChange={changeOffCampusHandler}
-          />
-          
-          &nbsp; &nbsp;
-          <TextField
-            id="carbs"
-            label="Carbs (g)"
-            size="small"
-            name="carbs_g"
-            type="number"
-            value={carbs_g}
-            onChange={changeOffCampusHandler}
-          />
-          <br></br>
-          &nbsp; &nbsp;
-          <TextField
-            id="fiber"
-            label="Fiber (g)"
-            size="small"
-            name="fiber_g"
-            type="number"
-            value={fiber_g}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="sugar"
-            label="Sugar (g)"
-            size="small"
-            name="sugar_g"
-            type="number"
-            value={sugar_g}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="protein"
-            label="Protein (g)"
-            size="small"
-            name="protein_g"
-            type="number"
-            value={protein_g}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="sodium"
-            label="Sodium (mg)"
-            size="small"
-            name="sodium_mg"
-            type="number"
-            value={sodium_mg}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="potassium"
-            label="Potassium (mg)"
-            size="small"
-            name="potassium_mg"
-            type="number"
-            value={potassium_mg}
-            onChange={changeOffCampusHandler}
-          />
-          &nbsp; &nbsp;
-          <TextField
-            id="cholesterol"
-            label="Cholesterol (mg)"
-            size="small"
-            name="cholesterol_mg"
-            type="number"
-            value={cholesterol_mg}
-            onChange={changeOffCampusHandler}
-          />
-          <br></br>
-          <br></br>
-          &nbsp; &nbsp;
-
-          <Button
-            type="submit"
-            variant="contained"
-            size="large">
-            Submit</Button>
-      </form>
-    </div>
-
     </ThemeProvider>
   
     );
