@@ -1,7 +1,7 @@
 use oracle::{Result, Connection};
 use serde::{Serialize, Deserialize};
 use log::{info, error};
-use actix_web::{self, Responder, web::Json, HttpResponse};
+use actix_web::{web::Json};
 
 use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};
 
@@ -23,15 +23,15 @@ pub struct SearchResult {
     serving_size: Option<String>
 }
 
-pub async menu_search(term: Json<SearchTerm>) -> Json<SearchResults> {
+pub async fn menu_search(term: Json<SearchTerm>) -> Json<SearchResults> {
 
     let term = term.into_inner();
 
-    match fuzzy_search(term) {
+    match fuzzy_search(&term.search_term) {
         Ok(result) => Json(result),
         Err(e) => {
-            error!("failed to search for {}", term);
-            Json(vec![])
+            error!("failed to search for {}: {}", term.search_term, e);
+            Json(SearchResults::default())
         }
     }
 
@@ -39,11 +39,11 @@ pub async menu_search(term: Json<SearchTerm>) -> Json<SearchResults> {
 
 fn fuzzy_search(term: &str) -> Result<SearchResults> {
     let conn = Connection::connect(ORACLE_USER,ORACLE_PASS,ORACLE_CON_STR)?;
-    let stmt = conn.statement("select * from menu_item where item_name like :term").build()?;
+    let mut stmt = conn.statement(format!("select * from menu_item where item_name like '{}%'", term).as_str()).build()?;
     
-    let rows = stmt.query_named(&[("term", &term)])?;
+    let rows = stmt.query(&[])?;
 
-    let rows_vec = SearchResults::default();
+    let mut rows_vec = SearchResults::default();
 
     for row_result in rows{
         let row = row_result?;
@@ -54,6 +54,7 @@ fn fuzzy_search(term: &str) -> Result<SearchResults> {
         serving_size: row.get(3).unwrap_or(None)
         });
     }
+    conn.close()?;
 
     Ok(rows_vec)
 
