@@ -60,6 +60,10 @@ async fn main() -> std::io::Result<()> {
                     .route(web::post().to(api::plan::plan))
                 )
                 .service(
+                    web::resource("/goal/{net_id}")
+                    .route(web::get().to(api::plan::plan_lookup))
+                )
+                .service(
                     web::resource("/week_plan")
                     .route(web::post().to(api::week::week))
                 )
