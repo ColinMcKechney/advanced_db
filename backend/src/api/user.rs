@@ -3,7 +3,7 @@ use rand::{prelude::Rng, distributions::Alphanumeric };
 use oracle::{Connection, Error};
 use log::{info, warn, error};
 use actix_identity::Identity;
-use actix_web::{web, Responder, HttpRequest, HttpMessage, HttpResponse, cookie};
+use actix_web::{web, Responder, HttpRequest, HttpMessage, HttpResponse};
 use serde::{Deserialize, Serialize};
 use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};
 
@@ -41,7 +41,6 @@ pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Respond
     println!("{:?}", body);
     match authenticate(net_id, password) {
         Some(user) => {
-            let id = Identity::login(&request.extensions(), net_id.into()).unwrap();
             web::Json(user);
             HttpResponse::Ok()
         },
@@ -52,8 +51,7 @@ pub async fn login(request: HttpRequest, body: web::Json<Entry>) -> impl Respond
     }
 }
 
-pub async fn logout(user: Identity) -> impl Responder {
-    user.logout();
+pub async fn logout() -> impl Responder {
     HttpResponse::Ok()
 }
 

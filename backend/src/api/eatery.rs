@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use actix_web::{web::Path, Responder, HttpResponse, web::Json};
+use actix_web::{web::Path, web::Json};
 use oracle::Connection;
 use log::error;
 use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};

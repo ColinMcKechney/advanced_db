@@ -1,6 +1,6 @@
 use oracle::{Result, Connection};
 use serde::{Serialize, Deserialize};
-use log::{info, error};
+use log::error;
 use actix_web::{web::Json};
 
 use crate::config::{ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR};
