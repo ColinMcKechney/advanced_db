@@ -73,11 +73,11 @@ const Log = () => {
   }
 //get the start of each week and reformat to Oracle date type
 function weekStart(){
-  var date_str = new Date();
+  var date_st = new Date();
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  var weekday = days[date_str.getDay()]
+  var weekday = days[date_st.getDay()]
 
-  if (weekday != 'Sunday'){
+  if (weekday !== 'Sunday'){
     return;
   }
 
@@ -137,9 +137,65 @@ const net_id = ReactSession.get("net_id");
           }
 
 
-    const [cals, setCals] = useState([{}]);
-    const [fat, setFat] = useState([{}]);
-    const [trans, setTrans] = useState([{}]);
+    //Set color variables for chips      
+    const [cals, setCals] = useState(false);
+    const [fat, setFat] = useState(false);
+    const [trans, setTrans] = useState(false);
+    const [carbs, setCarbs] = useState(false);
+    const [sugar, setSugar] = useState(false);
+    const [fiber, setFiber] = useState(false);
+    const [cholesterol, setChol] = useState(false);
+    const [sodium, setSodium] = useState(false);
+    const [sat, setSat] = useState(false);
+    const [protein, setProtein] = useState(false);
+    const [potassium, setPotassium] = useState(false);
+    
+    const setColors = () => {
+
+       
+
+        //set green
+        if(sum.calories < (1.1*goals.calories) && sum.calories >= (0.9*goals.calories)){
+            setCals(true)
+        }
+        if(sum.fat_g < (1.1*goals.fat_g) && sum.fat_g >= (0.9*goals.fat_g)){
+            setFat(true)
+        }
+        console.log(fat);
+        if(sum.trans_fat_g < (1.1*goals.trans_fat_g) && sum.trans_fat_g >= (0.9*goals.trans_fat_g)){
+            setTrans(true)
+        }
+        if(sum.carbs_g < (1.1*goals.carbs_g) && sum.carbs_g >= (0.9*goals.carbs_g)){
+            setCarbs(true)
+        }
+        if(sum.sugar_g < (1.1*goals.sugar_g) && sum.sugar_g >= (0.9*goals.sugar_g)){
+            setSugar(true)
+        }
+        if(sum.protein_g < (1.1*goals.protein_g) && sum.protein_g >= (0.9*goals.protein_g)){
+            setProtein(true)
+        }
+        if(sum.fiber_g < (1.1*goals.fiber_g) && sum.fiber_g >= (0.9*goals.fiber_g)){
+            setFiber(true)
+        }
+        if(sum.cholesterol_mg < (1.1*goals.cholesterol_mg) && sum.cholesterol_mg >= (0.9*goals.cholesterol_mg)){
+            setChol(true)
+        }
+        if(sum.sodium_mg < (1.1*goals.sodium_mg) && sum.sodium_mg >= (0.9*goals.sodium_mg)){
+            setSodium(true)
+        }
+        if(sum.sat_fat_g < (1.1*goals.sat_fat_g) && sum.sat_fat_g >= (0.9*goals.sat_fat_g)){
+            setSat(true)
+        }
+        if(sum.potassium_mg < (1.1*goals.potassium_mg) && sum.potassium_mg >= (0.9*goals.potassium_mg)){
+            setPotassium(true)
+        }
+
+    
+    }
+
+
+
+    
 
     //Run getSum, getHistory, and getPlan on page load
         useEffect(() => {
@@ -147,9 +203,11 @@ const net_id = ReactSession.get("net_id");
             console.log('History in')
             getSum()
             console.log('Sum in')
-            getGoal()
+            //getGoal()
             console.log('Goal in')
-          }, [])
+            setColors()
+            console.log('Colors set')
+          }, []);
        
   
   return (
@@ -316,29 +374,85 @@ const net_id = ReactSession.get("net_id");
         &nbsp; &nbsp;
         At a glance
       </h4>
+      <p> &nbsp; &nbsp; Each category will be red if you are more than 30% above or below your weekly goal</p>
 
       <Stack direction="row" spacing={2}>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <Chip label="Calories" variant="outlined"/>
-        <Chip label="Fat" variant="outlined"/>
+        <Chip label="Calories" variant="outlined" sx={{
+          
+          bgcolor: cals ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
+        <Chip label="Fat" variant="outlined" sx={{
+          
+          bgcolor: fat ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp;
-        <Chip label="Saturated Fat" variant="outlined"/>
+        <Chip label="Saturated Fat" variant="outlined" sx={{
+          
+          bgcolor: sat ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp;
-        <Chip label="Trans Fat" variant="outlined"/>
+        <Chip label="Trans Fat" variant="outlined" sx={{
+          
+          bgcolor: trans ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp;
-        <Chip label="Carbs" variant="outlined"/>
+        <Chip label="Carbs" variant="outlined" sx={{
+          
+          bgcolor: carbs ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp;
-        <Chip label="Fiber" variant="outlined"/>
+        <Chip label="Fiber" variant="outlined" sx={{
+          
+          bgcolor: fiber ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp;
-        <Chip label="Sugar" variant="outlined"/>
+        <Chip label="Sugar" variant="outlined" sx={{
+          
+          bgcolor: sugar ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp;
-        <Chip label="Protein" variant="outlined"/>
+        <Chip label="Protein" variant="outlined" sx={{
+          
+          bgcolor: protein ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp;
-        <Chip label="Sodium" variant="outlined"/>
+        <Chip label="Sodium" variant="outlined" sx={{
+          
+          bgcolor: sodium ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <Chip label="Potassium" variant="outlined"/>
+        <Chip label="Potassium" variant="outlined" sx={{
+          
+          bgcolor: potassium ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <Chip label="Cholesterol" variant="outlined"/>
+        <Chip label="Cholesterol" variant="outlined" sx={{
+          
+          bgcolor: cholesterol ? '#117E0F':'#D93030',
+          color: 'white',
+   
+        }}/>
       </Stack>
     </div>
 

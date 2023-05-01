@@ -88,7 +88,14 @@ const [keyword, setKeyword] = useState({
 })
 
 const [searchItems, setSearchItems] = useState([]);
-const [sendItems, setSendItems] = useState([{}]);
+const [sendItems, setSendItems] = useState([])
+
+const sendToPlan = () => {
+  console.log(sendItems);
+  Axios.post('http://3.219.93.142:8000/api/week_meals', {net_id: ReactSession.get("net_id"), item_list: sendItems,}).then((response) => {
+   console.log(response);
+ });
+}
 
 
 const{search_term} = keyword
@@ -258,6 +265,18 @@ color: 'main',
             variant="contained"
             size="medium">
           Search</Button>
+          <Button 
+          variant="contained"
+          type="button"
+          size="medium"
+          sx={{
+        color: 'white',
+    ':hover': {
+      bgcolor: '#ffc6c4',
+      color: 'white',
+    },
+    marginLeft: 5
+  }} onClick={sendToPlan}>Add checked to Plan</Button>
       </form>
 
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
