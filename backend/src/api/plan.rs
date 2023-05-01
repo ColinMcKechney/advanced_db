@@ -80,7 +80,7 @@ fn plan_search(net_id: &str) -> Result<PlanData> {
 
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
 
-    let mut stmt = conn.statement("select * from goal where net_id = :1 and ROWNUM = 1 order by date").build()?;
+    let mut stmt = conn.statement("select * from goal where s_net_id = :1 and ROWNUM = 1 order by week_date").build()?;
 
     let row = stmt.query_row(&[&net_id])?;
 
