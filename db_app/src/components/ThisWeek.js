@@ -158,7 +158,7 @@ const net_id = ReactSession.get("net_id");
     
     const setColors = () => {
 
-       var dayFactor = planDay();
+       var dayFactor = planDay() / 7;
 
         //set green
         if(sum.calories < (1.1*goals.calories/dayFactor) && sum.calories >= (0.9*goals.calories/dayFactor)){
