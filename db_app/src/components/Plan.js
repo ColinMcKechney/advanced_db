@@ -125,6 +125,24 @@ const [keyword, setKeyword] = useState({
 
 const{search_term} = keyword
 
+const changeSearchHandler = evt => {
+  setKeyword({ ...keyword, [evt.target.name]: [evt.target.value] })
+}
+
+const submitSearchHandler = evt => {
+  evt.preventDefault();
+  console.log(search_term)
+  console.log(net_id)
+  Axios.post("http://3.219.93.142:8000/api/menu_search",
+    {
+      search_term:search_term[0]
+    }).then((response) => {
+      console.log(response);
+      console.log(response.status);
+      console.log(response.data);
+    })
+};
+
 
 //to add an off campus food item or meal to your weekly journal
   const [offCampusInput, setOffCampusInput] = useState({
@@ -455,12 +473,15 @@ const{search_term} = keyword
       <h3> &nbsp; &nbsp;
         On-Campus
       </h3>
-      <form>
+      <form onSubmit={submitSearchHandler}>
           &nbsp; &nbsp;
           <TextField
-            id="keywordsearch"
+            id="search_term"
             label="Keyword"
             size="medium"
+            name="search_term"
+            value={search_term}
+            onChange={changeSearchHandler}
           />
 
           &nbsp; &nbsp;
