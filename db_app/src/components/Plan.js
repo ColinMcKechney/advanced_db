@@ -199,7 +199,7 @@ const submitGoalHandler = evt => {
     <AppBar className='bar' position="static">
 <Toolbar>
 <Button variant="h2" color="main" onClick={Home}sx={{
-          
+
             bgcolor: '#053B06', // theme.palette.primary.main
             color: 'main',
      
@@ -208,8 +208,6 @@ const submitGoalHandler = evt => {
       </Button>
       <Button variant="h2" color="main" onClick={Log}>Log Meals</Button>
       <Button variant="h2" color="main" onClick={Progress}>Plan Progress</Button>
-     
-  
      
 </Toolbar>
   </AppBar>
@@ -455,6 +453,7 @@ const submitGoalHandler = evt => {
       <h3> &nbsp; &nbsp;
         On-Campus
       </h3>
+
       <form>
           &nbsp; &nbsp;
           <FormControl sx={{minWidth:170 }}>
@@ -485,6 +484,44 @@ const submitGoalHandler = evt => {
             size="medium">
           Search</Button>
       </form>
+
+      <TableContainer component={Paper}>
+          <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ width: 90 }}  align="left">Food</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Calories</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Protein&nbsp;(g)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
+              <TableCell style={{ width: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            <TableRow>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+              <TableCell> </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    
 
       <h3> &nbsp; &nbsp;
         Off-Campus
