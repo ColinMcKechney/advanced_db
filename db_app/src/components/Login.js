@@ -52,8 +52,6 @@ const [data,setData] = useState({
   
   const submitHandler = e => {
     e.preventDefault();
-    console.log(data);
-    console.log(net_id[0])
     login();
     
   }
@@ -105,7 +103,6 @@ const login = () => {
           title="Logo"
           sx={{ width: 300, height:100}}
           alt="logo"
-          
 
         />
         </Card>

@@ -23,6 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
+import Axios from 'axios';
 
 
 const theme = createTheme({
@@ -56,47 +57,47 @@ const menuExpansion = () => {
 }
 
   const setStarbucks = () => {
-    ReactSession.set("eatery", "Starbucks");
+    ReactSession.set("eatery", 6);
     menuExpansion();
   }
 
   const setChick = () => {
-    ReactSession.set("eatery", "Chick-fil-a");
+    ReactSession.set("eatery", 2);
     menuExpansion();
   }
 
   const setABP = () => {
-    ReactSession.set("eatery", "Au Bon Pain");
+    ReactSession.set("eatery", 5);
     menuExpansion();
   }
 
   const setMoma = () => {
-    ReactSession.set("eatery", "Modern Market");
+    ReactSession.set("eatery", 7);
+   
     menuExpansion();
   }
 
   const setTaco = () => {
-    ReactSession.set("eatery", "Taco Bell");
+    ReactSession.set("eatery", 8);
     menuExpansion();
   }
 
   const setDH = () => {
-    ReactSession.set("eatery", "Dining Hall");
+    ReactSession.set("eatery", 1);
     menuExpansion();
   }
 
   const setFlip = () => {
-    ReactSession.set("eatery", "Flip Kitchen");
+    ReactSession.set("eatery", 4);
     menuExpansion();
   }
 
   const setSmash = () => {
-    ReactSession.set("eatery", "Smashburger");
+    ReactSession.set("eatery", 3);
     menuExpansion();
   }
-  
- 
 
+  
   return (
 
     <ThemeProvider theme={theme}>
