@@ -111,6 +111,7 @@ fn add_menu_items(items: MenuItems) -> Result<()> {
     NULL,
     NULL,
     NULL,
+    NULL,
     1)", items.net_id).as_str()).build()?;
 
     for item in items.item_list {
