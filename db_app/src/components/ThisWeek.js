@@ -92,6 +92,12 @@ function weekStart(){
   return db_date;
 }
 
+function planDay(){
+    var date_s = new Date();
+    var index = date_s.getDay();
+    return(index + 1)
+}
+
 const net_id = ReactSession.get("net_id");
 
 
@@ -152,41 +158,41 @@ const net_id = ReactSession.get("net_id");
     
     const setColors = () => {
 
-       
+       var dayFactor = planDay();
 
         //set green
-        if(sum.calories < (1.1*goals.calories) && sum.calories >= (0.9*goals.calories)){
+        if(sum.calories < (1.1*goals.calories/dayFactor) && sum.calories >= (0.9*goals.calories/dayFactor)){
             setCals(true)
         }
-        if(sum.fat_g < (1.1*goals.fat_g) && sum.fat_g >= (0.9*goals.fat_g)){
+        if(sum.fat_g < (1.1*goals.fat_g/dayFactor) && sum.fat_g >= (0.9*goals.fat_g/dayFactor)){
             setFat(true)
         }
         console.log(fat);
-        if(sum.trans_fat_g < (1.1*goals.trans_fat_g) && sum.trans_fat_g >= (0.9*goals.trans_fat_g)){
+        if(sum.trans_fat_g < (1.1*goals.trans_fat_g/dayFactor) && sum.trans_fat_g >= (0.9*goals.trans_fat_g/dayFactor)){
             setTrans(true)
         }
-        if(sum.carbs_g < (1.1*goals.carbs_g) && sum.carbs_g >= (0.9*goals.carbs_g)){
+        if(sum.carbs_g < (1.1*goals.carbs_g/dayFactor) && sum.carbs_g >= (0.9*goals.carbs_g/dayFactor)){
             setCarbs(true)
         }
-        if(sum.sugar_g < (1.1*goals.sugar_g) && sum.sugar_g >= (0.9*goals.sugar_g)){
+        if(sum.sugar_g < (1.1*goals.sugar_g/dayFactor) && sum.sugar_g >= (0.9*goals.sugar_g/dayFactor)){
             setSugar(true)
         }
-        if(sum.protein_g < (1.1*goals.protein_g) && sum.protein_g >= (0.9*goals.protein_g)){
+        if(sum.protein_g < (1.1*goals.protein_g/dayFactor) && sum.protein_g >= (0.9*goals.protein_g/dayFactor)){
             setProtein(true)
         }
-        if(sum.fiber_g < (1.1*goals.fiber_g) && sum.fiber_g >= (0.9*goals.fiber_g)){
+        if(sum.fiber_g < (1.1*goals.fiber_g/dayFactor) && sum.fiber_g >= (0.9*goals.fiber_g/dayFactor)){
             setFiber(true)
         }
-        if(sum.cholesterol_mg < (1.1*goals.cholesterol_mg) && sum.cholesterol_mg >= (0.9*goals.cholesterol_mg)){
+        if(sum.cholesterol_mg < (1.1*goals.cholesterol_mg/dayFactor) && sum.cholesterol_mg >= (0.9*goals.cholesterol_mg/dayFactor)){
             setChol(true)
         }
-        if(sum.sodium_mg < (1.1*goals.sodium_mg) && sum.sodium_mg >= (0.9*goals.sodium_mg)){
+        if(sum.sodium_mg < (1.1*goals.sodium_mg/dayFactor) && sum.sodium_mg >= (0.9*goals.sodium_mg/dayFactor)){
             setSodium(true)
         }
-        if(sum.sat_fat_g < (1.1*goals.sat_fat_g) && sum.sat_fat_g >= (0.9*goals.sat_fat_g)){
+        if(sum.sat_fat_g < (1.1*goals.sat_fat_g/dayFactor) && sum.sat_fat_g >= (0.9*goals.sat_fat_g/dayFactor)){
             setSat(true)
         }
-        if(sum.potassium_mg < (1.1*goals.potassium_mg) && sum.potassium_mg >= (0.9*goals.potassium_mg)){
+        if(sum.potassium_mg < (1.1*goals.potassium_mg/dayFactor) && sum.potassium_mg >= (0.9*goals.potassium_mg/dayFactor)){
             setPotassium(true)
         }
 
@@ -207,6 +213,7 @@ const net_id = ReactSession.get("net_id");
             console.log('Goal in')
             setColors()
             console.log('Colors set')
+            console.log(planDay())
           }, []);
        
   
@@ -374,7 +381,8 @@ const net_id = ReactSession.get("net_id");
         &nbsp; &nbsp;
         At a glance
       </h4>
-      <p> &nbsp; &nbsp; Each category will be red if you are more than 30% above or below your weekly goal</p>
+      <p> &nbsp; &nbsp; Each category will be red if you are more than 30% off track from your weekly goal for this point in the week.</p>
+      <p> &nbsp; &nbsp; If it's green, you're pretty much on track!</p>
 
       <Stack direction="row" spacing={2}>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
