@@ -132,22 +132,55 @@ fn add_menu_items(items: MenuItems) -> Result<()> {
     let mut stmt = conn.statement(format!("insert into {} values (
     :item_id,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL, 
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    :item_name,
+    :calories,
+    :fat_g,
+    :sat_fat_g,
+    :trans_fat_g, 
+    :carbs_g,
+    :fiber_g,
+    :sugar_g,
+    :protein_g,
+    :sodium_mg,
+    :potassium_mg,
+    :cholesterol_mg,
     1)", items.net_id).as_str()).build()?;
 
+    let mut lookup = conn.statement("select * from nutrition_info natural join menu_item where item_id = :item_id").build()?;
+
     for item in items.item_list {
-        stmt.execute_named(&[("item_id",&item)])?;
+        let row = lookup.query_row_named(&[("item_id", &item)])?;
+        let result: ItemData = ItemData { 
+            net_id: "".to_string(),
+            item_name: row.get(13).unwrap_or("".to_string()),
+            amount: None,
+            calories: row.get(2).unwrap_or(None),
+            fat_g: row.get(3).unwrap_or(None),
+            sat_fat_g: row.get(4).unwrap_or(None),
+            trans_fat_g: row.get(5).unwrap_or(None),
+            carbs_g: row.get(6).unwrap_or(None),
+            fiber_g: row.get(7).unwrap_or(None),
+            sugar_g: row.get(8).unwrap_or(None),
+            protein_g: row.get(9).unwrap_or(None),
+            sodium_mg: row.get(10).unwrap_or(None),
+            potassium_mg: row.get(11).unwrap_or(None),
+            cholesterol_mg: row.get(12).unwrap_or(None) }; 
+
+        stmt.execute_named(&[
+        ("item_id",&item),
+        ("item_name", &result.item_name),
+        ("calories", &result.calories),
+        ("fat_g", &result.fat_g),
+        ("sat_fat_g", &result.sat_fat_g),
+        ("trans_fat_g", &result.trans_fat_g),
+        ("carbs_g", &result.carbs_g),
+        ("fiber_g", &result.fiber_g),
+        ("sugar_g", &result.sugar_g),
+        ("protein_g", &result.protein_g),
+        ("sodium_mg", &result.sodium_mg),
+        ("potassium_mg", &result.potassium_mg),
+        ("cholesterol_mg", &result.cholesterol_mg)
+        ])?;
     }
 
     conn.commit()?;
