@@ -154,7 +154,21 @@ fn create_user(username: &str, password: &str, first_name: &str, last_name: &str
         }
     };
     
-    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), amount number(5), foreign key (item_id) references menu_item (item_id))", username).as_str()).build()?;
+    let mut new_table = conn.statement(format!("create table {} ( item_id number(5), amount number(5),
+    item_name varchar2(128),
+    calories number(5),
+    fat_g number(5),
+    sat_fat_g number(5),
+    trans_fat_g number(5),
+    carbs_g number(5),
+    fiber_g number(5),
+    sugar_g number(5),
+    protein_g number(5),
+    sodium_mg number(5),
+    potassium_mg number(5),
+    cholesterol_mg number(5),
+    menu_item number(1),
+    foreign key (item_id) references menu_item (item_id))", username).as_str()).build()?;
 
     match new_table.execute(&[]) {
         Ok(_) => {
