@@ -41,7 +41,7 @@ fn fuzzy_search(term: &str) -> Result<SearchResults> {
     let conn = Connection::connect(ORACLE_USER,ORACLE_PASS,ORACLE_CON_STR)?;
     let stmt = conn.statement("select * from menu_item where item_name like :term").build()?;
     
-    let rows = stmt.query_named(&[("term", &term))?;
+    let rows = stmt.query_named(&[("term", &term)])?;
 
     let rows_vec = SearchResults::default();
 
@@ -52,7 +52,7 @@ fn fuzzy_search(term: &str) -> Result<SearchResults> {
         item_id: row.get(1)?,
         eatery_id: row.get(2).unwrap_or(None),
         serving_size: row.get(3).unwrap_or(None)
-        };
+        });
     }
 
     Ok(rows_vec)
