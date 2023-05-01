@@ -84,7 +84,7 @@ const login = () => {
     
     
         <ThemeProvider theme={theme}>
-      <div className='bg' style={{backgroundImage: 'url(' + require('./images/main_background.jpg') + ')'}}>
+      <div className='bg' style={{backgroundImage: 'url(' + require('./images/back.jpg') + ')'}}>
       <div className='logbox'>
        <Box
         sx={{  

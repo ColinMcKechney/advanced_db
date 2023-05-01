@@ -36,6 +36,7 @@ const theme = createTheme({
       primary: {
         main: lightGreen[700],
         apple: red[500],
+        main2: '#588157',
       },
 
     },
@@ -196,8 +197,8 @@ const submitGoalHandler = evt => {
       </AppBar>
 
 
-    <AppBar className='bar' position="static">
-<Toolbar>
+    <AppBar color='main2' className='bar' position="static">
+<Toolbar color='main2'>
 <Button variant="h2" color="main" onClick={Home}sx={{
 
             bgcolor: '#053B06', // theme.palette.primary.main

@@ -130,13 +130,12 @@ const menuExpansion = () => {
         &nbsp; &nbsp;
         Campus Eateries
       </h2>
-  
      
 </Toolbar>
   </AppBar>
 
 <Box sx={{  
-          margin: 8,
+          margin: 5,
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
