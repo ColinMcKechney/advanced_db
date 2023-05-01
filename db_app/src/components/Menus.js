@@ -124,6 +124,17 @@ const menuExpansion = () => {
   </Toolbar>
 </AppBar>
 
+<AppBar className='bar' position="static">
+<Toolbar>
+<h2 sx={{padding:5, margin: 5}}>
+        &nbsp; &nbsp;
+        Campus Eateries
+      </h2>
+  
+     
+</Toolbar>
+  </AppBar>
+
 <Box sx={{  
           margin: 8,
           display: "flex",

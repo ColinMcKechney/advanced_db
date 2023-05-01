@@ -41,7 +41,7 @@ const theme = createTheme({
     },
   });
 
-function MyPlan() {
+function ThisWeek() {
 
     const navigate = useNavigate();
 
@@ -65,15 +65,12 @@ const logout = () => {
 }
 
 const Log = () => {
-  navigate('/LogMeals')
-}
-
-const Progress = () => {
-  navigate('/ThisWeek')
-}
-
-
-
+    navigate('/LogMeals')
+  }
+  
+  const Progress = () => {
+    navigate('/ThisWeek')
+  }
 //get the start of each week and reformat to Oracle date type
 function weekStart(){
   var date_str = new Date();
@@ -173,7 +170,7 @@ const submitGoalHandler = evt => {
   
   return (
   <ThemeProvider theme={theme}>  
-  
+ 
       <AppBar position="static">
         <Toolbar variant="dense">
           <Button  variant="h6" color="main" position="right" onClick={Home}>
@@ -194,20 +191,18 @@ const submitGoalHandler = evt => {
           </Button>
         </Toolbar>
       </AppBar>
-
-
-    <AppBar className='bar' position="static">
+      <AppBar className='bar' position="static">
 <Toolbar>
-<Button variant="h2" color="main" onClick={Home}sx={{
-          
-            bgcolor: '#053B06', // theme.palette.primary.main
-            color: 'main',
-     
-          }}>
+<Button variant="h2" color="main" onClick={Home}>
         Plan for {net_id}
       </Button>
       <Button variant="h2" color="main" onClick={Log}>Log Meals</Button>
-      <Button variant="h2" color="main" onClick={Progress}>Plan Progress</Button>
+      <Button variant="h2" color="main" onClick={Progress} sx={{
+          
+          bgcolor: '#053B06', // theme.palette.primary.main
+          color: 'main',
+   
+        }}>Plan Progress</Button>
      
   
      
@@ -582,4 +577,4 @@ const submitGoalHandler = evt => {
     );
   }
   
-  export default MyPlan;
+  export default ThisWeek;

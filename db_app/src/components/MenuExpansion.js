@@ -80,7 +80,10 @@ const eatery_to_query = getEatery();
 }
 
 
+
+
 const [menuItems, setmenuItems] = useState([{}]);
+const [toAdd, setToAdd] = useState([]);
 
 const doMenu = () => {
   const data = getMenu();
@@ -91,6 +94,44 @@ const buttonTime = () => {
  getMenu();
  console.log(menuItems);
 }
+
+const removeItem = (index) => {
+  setToAdd([
+             ...toAdd.slice(0, index),
+             ...toAdd.slice(index + 1)
+  ]);
+
+}
+
+function handleCheck (i) {
+  console.log(i);
+  if (toAdd.indexOf(i) > -1){
+    //get index and delete
+    var index = toAdd.indexOf(i)
+    removeItem(index);
+    console.log(`removed ${i}`);
+    
+  }
+
+  else{
+    setToAdd(toAdd => [...toAdd, i]);
+    console.log(`added ${i}`);
+  }
+  
+}
+
+
+
+const testChecks = () => {
+  console.log(toAdd);
+}
+
+const sendToPlan = () => {
+  Axios.post('http://3.219.93.142:8000/api/week_meals', {net_id: ReactSession.get("net_id"), item_list: toAdd,}).then((response) => {
+   console.log(response);
+ });
+  
+ }
  
 useEffect(() => {
   getMenu()
@@ -121,31 +162,47 @@ useEffect(() => {
   </Toolbar>
 </AppBar>
 
-<h3 sx={{padding:10, margin: 5}}>
+<AppBar className='bar' position="static">
+<Toolbar>
+<h2 sx={{padding:5, margin: 5}}>
         &nbsp; &nbsp;
-        Menu Items:
-      </h3>
+        Menu Items
+      </h2>
+      <Button sx={{
+        color: 'white',
+    ':hover': {
+      bgcolor: '#ffc6c4',
+      color: 'white',
+    },
+    marginLeft: 5
+  }} onClick={sendToPlan}>Add to Plan</Button>
+     
+</Toolbar>
+  </AppBar>
+
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer component={Paper} sx={{margin: 5, maxHeight: 440}}>
-          <Table stickyHeader sx={{maxWidth:700, size:"small"}}>
+      <TableContainer component={Paper} sx={{margin: 5, maxHeight: 440, maxWidth:1400}}>
+          <Table stickyHeader sx={{maxWidth:1400}}>
           <TableHead>
-            <TableRow>
-              <TableCell style={{ maxWidth: 120 }}  align="left">Food</TableCell>
+            <TableRow sx={{maxWidth:1400}}>
+            
+              <TableCell style={{ maxWidth: 110}}  align="left">Add?</TableCell>
+              <TableCell style={{ maxWidth: 110}}  align="left">Food</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Calories</TableCell>
-              <TableCell style={{ maxWidth: 90 }} align="left">Fat&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fat&nbsp;(g)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Saturated Fat&nbsp;(g)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell style={{ maxWidth: 90 }} align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell style={{ maxWidth: 90 }} align="left">Fiber&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 50 }} align="left">Carbs&nbsp;(g)</TableCell>
+              <TableCell style={{ maxWidth: 70 }} align="left">Fiber&nbsp;(g)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Sugar&nbsp;(g)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Protein&nbsp;(g)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Sodium&nbsp;(mg)</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell style={{ maxWidth: 90 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
+              <TableCell style={{ maxWidth: 80 }} align="left">Cholesterol&nbsp;(mg)</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
+          <TableBody sx={{maxWidth:1350}}>
             {menuItems.map((menuItem, i) => {
               console.log(i);
               return(
@@ -153,6 +210,15 @@ useEffect(() => {
                     key={menuItem.item_name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
+                    <TableCell padding="checkbox">
+
+                     
+                    <Checkbox
+                      
+                      color="primary"
+                      onChange={() => handleCheck(menuItem.item_id)}
+                    />
+                    </TableCell>
                     <TableCell>
                       {menuItem.item_name}
                     </TableCell>
@@ -175,6 +241,7 @@ useEffect(() => {
         </Table>
       </TableContainer>
       </Paper>
+
 
 
 
