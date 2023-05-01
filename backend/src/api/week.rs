@@ -22,6 +22,13 @@ pub struct ItemData{
     cholesterol_mg: Option<f32>
 }
 
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct MenuItems {
+    net_id: String,
+    item_list: Vec<u32>
+}
+
+
 pub async fn week(item: Json<ItemData>) -> impl Responder {
 
     let item = item.into_inner();
@@ -29,6 +36,19 @@ pub async fn week(item: Json<ItemData>) -> impl Responder {
         Ok(_) => HttpResponse::Ok(),
         Err(e) => {
             error!("Unable to add item to table {}: {}", item.net_id, e);
+            HttpResponse::InternalServerError()
+        }
+    }
+}
+
+pub async fn week_meals(items: Json<MenuItems>) -> impl Responder {
+    let items = items.into_inner();
+    let netid = items.net_id.clone();
+
+    match add_menu_items(items) {
+        Ok(_) => HttpResponse::Ok(),
+        Err(e) => {
+            error!("Unable to add menu items to table {}: {}", netid, e);
             HttpResponse::InternalServerError()
         }
     }
@@ -71,4 +91,34 @@ fn add_item(item: &ItemData) ->  Result<()> {
     info!("Added item {} to table {}", item.item_name, item.net_id);
     Ok(())
 
+}
+
+
+fn add_menu_items(items: MenuItems) -> Result<()> {
+    let conn = Connection::connect(ORACLE_USER,ORACLE_PASS, ORACLE_CON_STR)?;
+
+    let mut stmt = conn.statement(format!("insert into {} values (
+    :item_id,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL, 
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    1)", items.net_id).as_str()).build()?;
+
+    for item in items.item_list {
+        stmt.execute_named(&[("item_id",&item)])?;
+    }
+
+    conn.commit()?;
+    conn.close()?;
+    info!("inserted menu items into week table {}", items.net_id);
+    Ok(())
 }
