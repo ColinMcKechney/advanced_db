@@ -46,6 +46,21 @@ pub struct ItemResult{
     cholesterol_mg: Option<f32>
 }
 
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct Sums{
+    calories: f32,
+    fat_g: f32,
+    sat_fat_g: f32,
+    trans_fat_g: f32,
+    carbs_g: f32,
+    fiber_g: f32,
+    sugar_g: f32,
+    protein_g: f32,
+    sodium_mg: f32,
+    potassium_mg: f32,
+    cholesterol_mg: f32
+}
+
 pub async fn week(item: Json<ItemData>) -> impl Responder {
 
     let item = item.into_inner();
@@ -83,6 +98,35 @@ pub async fn week_lookup(net_id: Path<String>) -> Json<Vec<ItemResult>> {
         }
     }
 
+}
+
+pub async fn week_sums(net_id: Path<String>) -> Json<Sums> {
+    let net_id = net_id.into_inner();
+
+    let week = match get_week(&net_id) {
+        Ok(week) => week,
+        Err(e) => {
+            error!("failed to grab week info from {}: {}", net_id, e);
+            return Json(Sums::default());
+        }
+    };
+
+    let mut sums = Sums::default();
+    for item in week{
+        sums.calories += item.calories.unwrap_or_default();
+        sums.fat_g += item.fat_g.unwrap_or_default();
+        sums.sat_fat_g += item.sat_fat_g.unwrap_or_default();
+        sums.trans_fat_g += item.trans_fat_g.unwrap_or_default();
+        sums.carbs_g += item.carbs_g.unwrap_or_default();
+        sums.fiber_g += item.fiber_g.unwrap_or_default();
+        sums.sugar_g += item.sugar_g.unwrap_or_default();
+        sums.protein_g += item.protein_g.unwrap_or_default();
+        sums.sodium_mg += item.sodium_mg.unwrap_or_default();
+        sums.potassium_mg += item.potassium_mg.unwrap_or_default();
+        sums.cholesterol_mg += item.cholesterol_mg.unwrap_or_default();
+    }
+
+    Json(sums)
 }
 
 
