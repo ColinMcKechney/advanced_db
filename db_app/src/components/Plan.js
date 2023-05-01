@@ -118,25 +118,33 @@ const submitGoalHandler = evt => {
     })
 };
 
+//to find a food item from an on campus location to your weekly journal
+const [keyword, setKeyword] = useState({
+  search_term:""
+})
+
+const{search_term} = keyword
+
 
 //to add an off campus food item or meal to your weekly journal
   const [offCampusInput, setOffCampusInput] = useState({
     item_name:"",
-    calories: "",
-    fat_g: "",
-    sat_fat_g: "",
-    trans_fat_g: "",
-    carbs_g: "",
-    fiber_g: "",
-    sugar_g: "",
-    protein_g: "",
-    sodium_mg: "",
-    potassium_mg: "",
-    cholesterol_mg: "",
+    amount: 0,
+    calories: 0,
+    fat_g: 0,
+    sat_fat_g: 0,
+    trans_fat_g: 0,
+    carbs_g: 0,
+    fiber_g: 0,
+    sugar_g: 0,
+    protein_g: 0,
+    sodium_mg: 0,
+    potassium_mg: 0,
+    cholesterol_mg: 0,
   }
   );
 
-  const {item_name, calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
+  const {item_name, amount, calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
     sodium_mg, potassium_mg, cholesterol_mg} = offCampusInput
 
   const changeOffCampusHandler = evt => {
@@ -146,19 +154,23 @@ const submitGoalHandler = evt => {
   const submitOffCampusHandler = evt => {
     evt.preventDefault();
     console.log(offCampusInput)
-    Axios.post("http://3.219.93.142:8000/api/",
+    console.log(net_id)
+    Axios.post("http://3.219.93.142:8000/api/week_plan",
       {
-        calories: calories[0],
-        trans_fat_g: trans_fat_g[0],
-        sat_fat_g: sat_fat_g[0],
-        trans_fat_g: trans_fat_g[0],
-        carbs_g: carbs_g[0],
-        fiber_g: fiber_g[0],
-        sugar_g: sugar_g[0],
-        protein_g: protein_g[0],
-        sodium_mg: sodium_mg[0],
-        potassium_mg: potassium_mg[0],
-        cholesterol_mg: cholesterol_mg[0]
+        net_id: net_id,
+        item_name: item_name[0],
+        amount: Number(amount[0]),
+        calories: Number(calories[0]),
+        fat_g: Number(fat_g[0]),
+        sat_fat_g: Number(sat_fat_g[0]),
+        trans_fat_g: Number(trans_fat_g[0]),
+        carbs_g: Number(carbs_g[0]),
+        fiber_g: Number(fiber_g[0]),
+        sugar_g: Number(sugar_g[0]),
+        protein_g: Number(protein_g[0]),
+        sodium_mg: Number(sodium_mg[0]),
+        potassium_mg: Number(potassium_mg[0]),
+        cholesterol_mg: Number(cholesterol_mg[0])
       }).then((response) => {
         console.log(response);
         console.log(response.status);
@@ -473,6 +485,17 @@ const submitGoalHandler = evt => {
             value={item_name}
             onChange={changeOffCampusHandler}
           />
+          <br></br>
+          &nbsp; &nbsp;
+          <TextField
+            id="amount"
+            label="Number of Servings"
+            size="small"
+            name="amount"
+            type="number"
+            value={amount}
+            onChange={changeOffCampusHandler}
+          />
           &nbsp; &nbsp;
           <TextField
             sx={{ paddingBottom: 1 }}
@@ -480,6 +503,7 @@ const submitGoalHandler = evt => {
             label="Calories"
             size="small"
             name="calories"
+            type="number"
             value={calories}
             onChange={changeOffCampusHandler}
           />
@@ -489,6 +513,7 @@ const submitGoalHandler = evt => {
             label="Fat (g)"
             size="small"
             name="fat_g"
+            type="number"
             value={fat_g}
             onChange={changeOffCampusHandler}
           />
@@ -498,6 +523,7 @@ const submitGoalHandler = evt => {
             label="Saturated Fat (g)"
             size="small"
             name="sat_fat_g"
+            type="number"
             value={sat_fat_g}
             onChange={changeOffCampusHandler}
           />
@@ -507,6 +533,7 @@ const submitGoalHandler = evt => {
             label="Trans Fat (g)"
             size="small"
             name="trans_fat_g"
+            type="number"
             value={trans_fat_g}
             onChange={changeOffCampusHandler}
           />
@@ -517,6 +544,7 @@ const submitGoalHandler = evt => {
             label="Carbs (g)"
             size="small"
             name="carbs_g"
+            type="number"
             value={carbs_g}
             onChange={changeOffCampusHandler}
           />
@@ -527,6 +555,7 @@ const submitGoalHandler = evt => {
             label="Fiber (g)"
             size="small"
             name="fiber_g"
+            type="number"
             value={fiber_g}
             onChange={changeOffCampusHandler}
           />
@@ -536,6 +565,7 @@ const submitGoalHandler = evt => {
             label="Sugar (g)"
             size="small"
             name="sugar_g"
+            type="number"
             value={sugar_g}
             onChange={changeOffCampusHandler}
           />
@@ -545,6 +575,7 @@ const submitGoalHandler = evt => {
             label="Protein (g)"
             size="small"
             name="protein_g"
+            type="number"
             value={protein_g}
             onChange={changeOffCampusHandler}
           />
@@ -554,6 +585,7 @@ const submitGoalHandler = evt => {
             label="Sodium (mg)"
             size="small"
             name="sodium_mg"
+            type="number"
             value={sodium_mg}
             onChange={changeOffCampusHandler}
           />
@@ -563,6 +595,7 @@ const submitGoalHandler = evt => {
             label="Potassium (mg)"
             size="small"
             name="potassium_mg"
+            type="number"
             value={potassium_mg}
             onChange={changeOffCampusHandler}
           />
@@ -572,6 +605,7 @@ const submitGoalHandler = evt => {
             label="Cholesterol (mg)"
             size="small"
             name="cholesterol_mg"
+            type="number"
             value={cholesterol_mg}
             onChange={changeOffCampusHandler}
           />
