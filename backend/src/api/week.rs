@@ -8,6 +8,7 @@ use crate::config::{ORACLE_PASS, ORACLE_USER, ORACLE_CON_STR};
 pub struct ItemData{
     net_id: String,
     item_name: String,
+    amount: Option<f32>,
     calories: Option<f32>,
     fat_g: Option<f32>,
     sat_fat_g: Option<f32>,
@@ -36,7 +37,7 @@ pub async fn week(item: Json<ItemData>) -> impl Responder {
 fn add_item(item: &ItemData) ->  Result<()> {
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)? ;
 
-    let mut stmt = conn.statement(format!("insert into {} values (NULL, NULL, :item_name,
+    let mut stmt = conn.statement(format!("insert into {} values (NULL, :amount, :item_name,
     :calories,
     :fat_g,
     :sat_fat_g,
@@ -50,7 +51,9 @@ fn add_item(item: &ItemData) ->  Result<()> {
     :cholesterol_mg,
     0)", item.net_id).as_str()).build()?;
 
-    stmt.execute_named(&[("item_name", &item.item_name),
+    stmt.execute_named(&[
+    ("amount", &item.amount),
+    ("item_name", &item.item_name),
     ("calories", &item.calories),
     ("fat_g", &item.fat_g),
     ("sat_fat_g", &item.sat_fat_g),
