@@ -194,10 +194,9 @@ const submitSearchHandler = evt => {
         console.log(response.status);
       })
   };
-
   
-  return (
-  <ThemeProvider theme={theme}>  
+    return (
+    <ThemeProvider theme={theme}>  
     <div>
       <AppBar position="static">
         <Toolbar variant="dense">
@@ -399,46 +398,6 @@ const submitSearchHandler = evt => {
         </Table>
       </TableContainer>
     
-      <h3>
-        &nbsp; &nbsp;
-        Weekly Totals
-      </h3>
-
-      <TableContainer component={Paper}>
-        <Table sx={{ maxWidth: 1200 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Calories</TableCell>
-              <TableCell align="left">Fat&nbsp;(g)</TableCell>
-              <TableCell align="left">Saturated Fat&nbsp;(g)</TableCell>
-              <TableCell align="left">TransFat&nbsp;(g)</TableCell>
-              <TableCell align="left">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="left">Fiber&nbsp;(g)</TableCell>
-              <TableCell align="left">Sugar&nbsp;(g)</TableCell>
-              <TableCell align="left">Protein&nbsp;(g)</TableCell>
-              <TableCell align="left">Sodium&nbsp;(mg)</TableCell>
-              <TableCell align="left">Potassium&nbsp;(mg)</TableCell>
-              <TableCell align="left">Cholesterol&nbsp;(mg)</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            <TableRow>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-              <TableCell> </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-
       <br></br>
       <Stack direction="row" spacing={2}>
         &nbsp; &nbsp;
@@ -641,6 +600,7 @@ const submitSearchHandler = evt => {
             Submit</Button>
       </form>
     </div>
+
     </ThemeProvider>
   
     );

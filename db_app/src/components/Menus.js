@@ -73,6 +73,7 @@ const menuExpansion = () => {
 
   const setMoma = () => {
     ReactSession.set("eatery", 7);
+   
     menuExpansion();
   }
 
@@ -96,10 +97,7 @@ const menuExpansion = () => {
     menuExpansion();
   }
 
- 
   
- 
-
   return (
 
     <ThemeProvider theme={theme}>

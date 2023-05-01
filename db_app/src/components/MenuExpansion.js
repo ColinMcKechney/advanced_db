@@ -68,9 +68,6 @@ const getMenu = () => {
 };
 
 
-
-
-
 return(
 
 
@@ -96,6 +93,7 @@ return(
 </AppBar>
 
 <Button onClick={getMenu}>Test get menu</Button>
+
 </ThemeProvider>
 )
 
