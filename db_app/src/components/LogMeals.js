@@ -95,6 +95,7 @@ const sendToPlan = () => {
   Axios.post('http://3.219.93.142:8000/api/week_meals', {net_id: ReactSession.get("net_id"), item_list: sendItems,}).then((response) => {
    console.log(response);
  });
+ Progress();
 }
 
 

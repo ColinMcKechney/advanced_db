@@ -60,24 +60,27 @@ const displayWeek = () => {
   setWeek(() => weekStart());
 }
 
+
+//get start of week (sunday)
+function getLastSunday() {
+  const date = new Date();
+  const today = date.getDate();
+  const currentDay = date.getDay();
+  const newDate = date.setDate(today - (currentDay || 7));
+  return new Date(newDate);
+}
+
 //get the start of each week and reformat to Oracle date type
 function weekStart(){
-  var date_str = new Date();
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  var weekday = days[date_str.getDay()]
-
-  if (weekday != 'Sunday'){
-    return;
-  }
-
-  var date_str = new Date();
+  
+  var date_str = getLastSunday();
   var curr_day = String(date_str.getDate()).padStart(2, '0');
+  console.log(curr_day);
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-
   var curr_month = months[date_str.getMonth()];
   var curr_year = String(date_str.getFullYear());
   var db_date = curr_day + '-' + curr_month + '-' + curr_year.slice(2);
-
+   console.log(db_date)
   return db_date;
 }
 

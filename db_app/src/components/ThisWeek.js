@@ -116,7 +116,7 @@ const net_id = ReactSession.get("net_id");
     }
       //Get sum of totals for weekly plan (progress)
     const [goals, setGoals] = useState([{}]);
-    const goalURL = (net_id) => `http://3.219.93.142:8000/api/week_goal/${net_id}`;
+    const goalURL = (net_id) => `http://3.219.93.142:8000/api/goal/${net_id}`;
     
       const getGoal = () => {
         const net_id = ReactSession.get("net_id");
@@ -158,42 +158,82 @@ const net_id = ReactSession.get("net_id");
     
     const setColors = () => {
 
+     
+
        var dayFactor = planDay() / 7;
+       console.log(dayFactor)
+       console.log('Sum calories:')
+       console.log(sum.calories);
+       console.log('Goals calories:')
+       console.log(goals.calories);
+       console.log(goals.calories*dayFactor);
 
         //set green
-        if(sum.calories < (1.1*goals.calories/dayFactor) && sum.calories >= (0.9*goals.calories/dayFactor)){
+        if(sum.calories < (1.1*goals.total_cal*dayFactor) && sum.calories >= (0.9*goals.total_cal*dayFactor)){
             setCals(true)
         }
-        if(sum.fat_g < (1.1*goals.fat_g/dayFactor) && sum.fat_g >= (0.9*goals.fat_g/dayFactor)){
+        else {
+            setCals(false)
+        }
+        if(sum.fat_g < (1.1*goals.total_fat*dayFactor) && sum.fat_g >= (0.9*goals.total_fat*dayFactor)){
             setFat(true)
         }
-        console.log(fat);
-        if(sum.trans_fat_g < (1.1*goals.trans_fat_g/dayFactor) && sum.trans_fat_g >= (0.9*goals.trans_fat_g/dayFactor)){
+        else {
+            setFat(false)
+        }
+        
+        if(sum.trans_fat_g < (1.1*goals.total_trans_fat*dayFactor) && sum.trans_fat_g >= (0.9*goals.total_trans_fat*dayFactor)){
             setTrans(true)
         }
-        if(sum.carbs_g < (1.1*goals.carbs_g/dayFactor) && sum.carbs_g >= (0.9*goals.carbs_g/dayFactor)){
+        else {
+            setTrans(false)
+        }
+        if(sum.carbs_g < (1.1*goals.total_carbs*dayFactor) && sum.carbs_g >= (0.9*goals.total_carbs*dayFactor)){
             setCarbs(true)
         }
-        if(sum.sugar_g < (1.1*goals.sugar_g/dayFactor) && sum.sugar_g >= (0.9*goals.sugar_g/dayFactor)){
+        else {
+            setCarbs(false)
+        }
+        if(sum.sugar_g < (1.1*goals.total_sugar*dayFactor) && sum.sugar_g >= (0.9*goals.total_sugar*dayFactor)){
             setSugar(true)
         }
-        if(sum.protein_g < (1.1*goals.protein_g/dayFactor) && sum.protein_g >= (0.9*goals.protein_g/dayFactor)){
+        else {
+            setSugar(false)
+        }
+        if(sum.protein_g < (1.1*goals.total_protein*dayFactor) && sum.protein_g >= (0.9*goals.total_protein*dayFactor)){
             setProtein(true)
         }
-        if(sum.fiber_g < (1.1*goals.fiber_g/dayFactor) && sum.fiber_g >= (0.9*goals.fiber_g/dayFactor)){
+        else {
+            setProtein(false)
+        }
+        if(sum.fiber_g < (1.1*goals.total_fiber*dayFactor) && sum.fiber_g >= (0.9*goals.total_fiber*dayFactor)){
             setFiber(true)
         }
-        if(sum.cholesterol_mg < (1.1*goals.cholesterol_mg/dayFactor) && sum.cholesterol_mg >= (0.9*goals.cholesterol_mg/dayFactor)){
+        else {
+            setFiber(false)
+        }
+        if(sum.cholesterol_mg < (1.1*goals.total_cholesterol*dayFactor) && sum.cholesterol_mg >= (0.9*goals.total_cholesterol*dayFactor)){
             setChol(true)
         }
-        if(sum.sodium_mg < (1.1*goals.sodium_mg/dayFactor) && sum.sodium_mg >= (0.9*goals.sodium_mg/dayFactor)){
+        else {
+            setChol(false)
+        }
+        if(sum.sodium_mg < (1.1*goals.total_sodium*dayFactor) && sum.sodium_mg >= (0.9*goals.total_sodium*dayFactor)){
             setSodium(true)
         }
-        if(sum.sat_fat_g < (1.1*goals.sat_fat_g/dayFactor) && sum.sat_fat_g >= (0.9*goals.sat_fat_g/dayFactor)){
+        else {
+            setSodium(false)
+        }
+        if(sum.sat_fat_g < (1.1*goals.total_sat_fat*dayFactor) && sum.sat_fat_g >= (0.9*goals.total_sat_fat*dayFactor)){
             setSat(true)
         }
-        if(sum.potassium_mg < (1.1*goals.potassium_mg/dayFactor) && sum.potassium_mg >= (0.9*goals.potassium_mg/dayFactor)){
+        else {
+            setSat(false)
+        }
+        if(sum.potassium_mg < (1.1*goals.total_potassium*dayFactor) && sum.potassium_mg >= (0.9*goals.total_potassium*dayFactor)){
             setPotassium(true)
+        } else {
+            setPotassium(false)
         }
 
     
@@ -209,7 +249,7 @@ const net_id = ReactSession.get("net_id");
             console.log('History in')
             getSum()
             console.log('Sum in')
-            //getGoal()
+            getGoal()
             console.log('Goal in')
             setColors()
             console.log('Colors set')

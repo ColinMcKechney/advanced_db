@@ -94,9 +94,9 @@ function weekStart(){
 
 const net_id = ReactSession.get("net_id");
 
-  //Get history of plans for this week
+  //Get history of plans 
   const [pastPlans, setPastPlans] = useState([{}]);
-  const makePastURL = (net_id) => `http://3.219.93.142:8000/api/${net_id}`;
+  const makePastURL = (net_id) => `http://3.219.93.142:8000/api/all_goal/${net_id}`;
 
   const getPastPlans = () => {
     const net_id = ReactSession.get("net_id");
@@ -109,7 +109,7 @@ const net_id = ReactSession.get("net_id");
     }
       //Get history of actual totals for weekly plan (progress)
       const [past, setPast] = useState([{}]);
-      const makeURL = (net_id) => `http://3.219.93.142:8000/api/${net_id}`;
+      const makeURL = (net_id) => `http://3.219.93.142:8000/api/result/${net_id}`;
     
       const getPast = () => {
         const net_id = ReactSession.get("net_id");
@@ -128,13 +128,6 @@ const net_id = ReactSession.get("net_id");
             getPastPlans()
             console.log('Past plans in')
           }, [])
-
-
-
-
-
-  
-
   
   return (
   <ThemeProvider theme={theme}>  
