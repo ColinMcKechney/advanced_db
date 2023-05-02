@@ -158,6 +158,12 @@ const net_id = ReactSession.get("net_id");
        });
     }
 
+    function planDay(){
+      var date_s = new Date();
+      var index = date_s.getDay();
+      return(index + 1)
+  }
+
 
     //Set color variables for chips      
     const [cals, setCals] = useState(false);
