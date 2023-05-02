@@ -3,4 +3,6 @@ pub mod eatery;
 pub mod plan;
 pub mod week;
 pub mod menu;
+pub mod result;
+
 

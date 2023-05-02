@@ -70,6 +70,7 @@ async fn main() -> std::io::Result<()> {
                 .service(
                     web::resource("/week_meals")
                     .route(web::post().to(api::week::week_meals))
+                    .route(web::delete().to(api::week::delete_meals))
                 )
                 .service(
                     web::resource("/week_progress/{net_id}")
@@ -82,6 +83,14 @@ async fn main() -> std::io::Result<()> {
                 .service(
                     web::resource("week_sum/{net_id}")
                     .route(web::get().to(api::week::week_sums))
+                )
+                .service(
+                    web::resource("all_goal/{net_id}")
+                    .route(web::get().to(api::plan::all_plan))
+                )
+                .service(
+                    web::resource("result/{net_id}")
+                    .route(web::get().to(api::result::all_result))
                 )
                 .route("/", web::get().to(api_index))
             )

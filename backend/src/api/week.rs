@@ -130,6 +130,19 @@ pub async fn week_sums(net_id: Path<String>) -> Json<Sums> {
 }
 
 
+pub async fn delete_meals(items: Json<MenuItems> ) -> impl Responder {
+    let items = items.into_inner();
+
+    match week_meal_delete(&items) {
+        Ok(_) => HttpResponse::Ok(),
+        Err(e) => {
+            error!("failed to delete items from {}: {}", items.net_id, e);
+            HttpResponse::InternalServerError()
+        }
+    }
+}
+
+
 fn add_item(item: &ItemData) ->  Result<()> {
     let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)? ;
 
@@ -263,4 +276,18 @@ fn get_week(net_id: &str) -> Result<Vec<ItemResult>> {
     Ok(week)
 
 
+}
+
+
+fn week_meal_delete(items: &MenuItems) -> Result<()> {
+
+    let conn = Connection::connect(ORACLE_USER, ORACLE_PASS, ORACLE_CON_STR)?;
+
+    let mut stmt = conn.statement(format!("delete from {} where item_id = :1", items.net_id).as_str()).build()?;
+
+    for meal in items.item_list {
+        stmt.execute(&[&items.net_id])?;
+    }
+
+    Ok(())
 }
