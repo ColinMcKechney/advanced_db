@@ -93,7 +93,7 @@ async fn main() -> std::io::Result<()> {
                     .route(web::get().to(api::result::all_result))
                 )
                 .service(
-                    web::resource("add_result/")
+                    web::resource("/add_result")
                     .route(web::post().to(api::result::add_result))
                 )
                 .route("/", web::get().to(api_index))

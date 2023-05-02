@@ -285,8 +285,8 @@ fn week_meal_delete(items: &MenuItems) -> Result<()> {
 
     let mut stmt = conn.statement(format!("delete from {} where item_id = :1", items.net_id).as_str()).build()?;
 
-    for meal in items.item_list {
-        stmt.execute(&[&items.net_id])?;
+    for meal in &items.item_list {
+        stmt.execute(&[meal])?;
     }
 
     Ok(())
