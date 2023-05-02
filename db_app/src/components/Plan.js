@@ -109,6 +109,8 @@ const changeGoalHandler = evt =>{
   setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
 }
 
+const [success, setSuccess] = useState("");
+
 const submitGoalHandler = evt => {
   evt.preventDefault();
   console.log(goalInput)
@@ -133,6 +135,7 @@ const submitGoalHandler = evt => {
       console.log(response);
       console.log(response.status);
     })
+    setSuccess('Plan saved!');
 };
 
 //to find a food item from an on campus location to your weekly journal
@@ -416,6 +419,7 @@ const submitSearchHandler = evt => {
       Submit</Button>
       </form>
     </div>
+    <h2> &nbsp; &nbsp; {success}</h2>
     <br></br>
     
    

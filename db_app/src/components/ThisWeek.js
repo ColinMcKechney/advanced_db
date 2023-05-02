@@ -142,6 +142,39 @@ const net_id = ReactSession.get("net_id");
            
           }
 
+          const [toDelete, setToDelete] = useState([]);
+
+          const removeItem = (index) => {
+            setToDelete([
+                       ...toDelete.slice(0, index),
+                       ...toDelete.slice(index + 1)
+            ]);
+          
+          }
+          
+          function handleCheck (i) {
+            console.log(i);
+            if (toDelete.indexOf(i) > -1){
+              //get index and delete
+              var index = toDelete.indexOf(i)
+              removeItem(index);
+              console.log(`removed ${i}`);
+              
+            }
+          
+            else{
+              setToDelete(toDelete => [...toDelete, i]);
+              console.log(`added ${i}`);
+            }
+            
+          }
+    //Delete checked from plan
+    const sendToPlan = () => {
+        Axios.delete('http://3.219.93.142:8000/api/week_meals', {net_id: ReactSession.get("net_id"), item_list: toDelete,}).then((response) => {
+         console.log(response);
+       });
+    }
+
 
     //Set color variables for chips      
     const [cals, setCals] = useState(false);
@@ -241,7 +274,6 @@ const net_id = ReactSession.get("net_id");
 
 
 
-    
 
     //Run getSum, getHistory, and getPlan on page load
         useEffect(() => {
@@ -309,6 +341,14 @@ const net_id = ReactSession.get("net_id");
         &nbsp; &nbsp;
         Foods Eaten
       </h3>
+      <Button sx={{
+        color: 'main',
+    ':hover': {
+      bgcolor: 'green',
+      color: 'white',
+    },
+    marginLeft: 5
+  }} onClick={sendToPlan}> Remove checked from log</Button>
 
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer component={Paper} sx={{margin: 5, maxHeight: 200, maxWidth:1400}}>
@@ -316,7 +356,7 @@ const net_id = ReactSession.get("net_id");
           <TableHead>
             <TableRow sx={{maxWidth:1400}}>
             
-        
+            <TableCell style={{ maxWidth: 110}}  align="left">Remove?</TableCell>
               <TableCell style={{ maxWidth: 110}}  align="left">Food</TableCell>
               <TableCell style={{ maxWidth: 90 }} align="left">Calories</TableCell>
               <TableCell style={{ maxWidth: 70 }} align="left">Fat&nbsp;(g)</TableCell>
@@ -340,10 +380,20 @@ const net_id = ReactSession.get("net_id");
                     key={pastitem.item_name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                  
+
+<TableCell padding="checkbox">
+
+                     
+<Checkbox
+
+color="primary"
+onChange={() => handleCheck(pastitem.item_id)}
+/>
+</TableCell>
                     <TableCell>
                       {pastitem.item_name}
                     </TableCell>
+                    
         
               <TableCell> {pastitem.calories}</TableCell>
               <TableCell> {pastitem.fat_g}</TableCell>
