@@ -9,8 +9,6 @@ import {red, green, lightBlue, lightGreen} from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ReactSession } from 'react-client-session';
 import Axios from 'axios';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import { Table, TableBody, TableCell, TableContainer,TableHead, TableRow, Paper,Checkbox} from '@mui/material';
 
 
