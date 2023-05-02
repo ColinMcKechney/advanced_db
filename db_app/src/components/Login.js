@@ -29,6 +29,8 @@ const theme = createTheme({
 
 
 export function Login() {
+
+  //Navigate functions
   const navigate = useNavigate();
 
 	const navigateCreateAccount = () => {
@@ -37,54 +39,53 @@ export function Login() {
 
   const navigateHome = () => {
     navigate('/Plan');
- }
+  }
 
-const [data,setData] = useState({
+  //State variable for login data
+  const [data,setData] = useState({
     net_id:"",
     password:""
   })
 
+  //Variable for login data
   const {net_id,password} = data;
   
+  //Change handler for login form
   const changeHandler = e => {
     setData({...data,[e.target.name]:[e.target.value]});
   }
   
+  //Submit handler for login form
   const submitHandler = e => {
     e.preventDefault();
     login();
     
   }
 
-const setSession = () => {
+  //Set session variable for netid
+  const setSession = () => {
   ReactSession.set("net_id", net_id[0]);
-}
+  }
 
+//Send http request to log user in 
+  const login = () => {
+    Axios.post("http://3.219.93.142:8000/api/auth", {net_id: net_id[0], password: password[0],}).then((response) => {
+      console.log(response);
+      console.log(response.status);
+      if (response.status === 200){
+        setSession();
+        navigateHome();
+      }
 
-const getHello = () => {
-  Axios.get("http://3.219.93.142:8000/").then((response) => {
-     console.log(response.data);
-  });
-};
-
-const login = () => {
-  Axios.post("http://3.219.93.142:8000/api/auth", {net_id: net_id[0], password: password[0],}).then((response) => {
-     console.log(response);
-     console.log(response.status);
-     if (response.status === 200){
-      setSession();
-      navigateHome();
-     }
-
-  });
-};
+    });
+  };
 
 
    return (
     
     
         <ThemeProvider theme={theme}>
-      <div className='bg' style={{backgroundImage: 'url(' + require('./images/main_background.jpg') + ')'}}>
+      <div className='bg' style={{backgroundImage: 'url(' + require('./images/back.jpg') + ')'}}>
       <div className='logbox'>
        <Box
         sx={{  

@@ -31,3 +31,11 @@ position:fixed;
 .bar{
   margin-bottom: 15px;
 }
+
+.background_green{
+  background-color: green;
+}
+
+.background_red{
+  background-color: red;
+}

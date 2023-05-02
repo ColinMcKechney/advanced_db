@@ -37,7 +37,8 @@ const theme = createTheme({
   });
 
 function Menus() {
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
 	const Home = () => {
 		 navigate('/Plan');
@@ -108,7 +109,7 @@ const menuExpansion = () => {
     <Button variant="h6" color="main" component="div" onClick={Menus}>
       Menus
     </Button>
-    <Button  variant="h6" onClick="Past">
+    <Button  variant="h6" onClick={Past}>
     Past Plans</Button> 
     <Button variant="h6" color="main" component="div" onClick={navigateLogin} sx={{
     ':hover': {
@@ -121,8 +122,18 @@ const menuExpansion = () => {
   </Toolbar>
 </AppBar>
 
+<AppBar className='bar' position="static">
+<Toolbar>
+<h2 sx={{padding:5, margin: 5}}>
+        &nbsp; &nbsp;
+        Campus Eateries
+      </h2>
+     
+</Toolbar>
+  </AppBar>
+
 <Box sx={{  
-          margin: 8,
+          margin: 5,
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
