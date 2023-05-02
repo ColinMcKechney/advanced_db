@@ -35,9 +35,6 @@ import {
 } from '@mui/material';
 
 
-
-
-
 const theme = createTheme({
     palette: {
       primary: {
@@ -50,6 +47,7 @@ const theme = createTheme({
 
 function Menus() {
 
+  //Navigate function
   const navigate = useNavigate();
 
 	const Home = () => {
@@ -60,16 +58,18 @@ function Menus() {
    }
    const Past = () => {
     navigate('/Past');
-}
-const navigateLogin = () => {
+  }
+  const navigateLogin = () => {
     navigate('/');
-}
+  }
+
+//Format api all url based on eatery clicked
 const makeEateryUrl = (eatery) => `http://3.219.93.142:8000/api/eatery/${eatery}`;
 const getEatery = () => {
   return ReactSession.get("eatery");
 }
 
-
+//Http request to get menu items
 const getMenu = () => {
 const eatery_to_query = getEatery();
  Axios.get(makeEateryUrl(eatery_to_query)).then((response) => {
@@ -78,23 +78,12 @@ const eatery_to_query = getEatery();
 });
  
 }
-
-
-
-
+//State variables for menu items and for items to add to plan
 const [menuItems, setmenuItems] = useState([{}]);
 const [toAdd, setToAdd] = useState([]);
 
-const doMenu = () => {
-  const data = getMenu();
-  setmenuItems(data);
-}
 
-const buttonTime = () => {
- getMenu();
- console.log(menuItems);
-}
-
+//Remove an item from the to be added
 const removeItem = (index) => {
   setToAdd([
              ...toAdd.slice(0, index),
@@ -103,6 +92,7 @@ const removeItem = (index) => {
 
 }
 
+//Checkbox handler
 function handleCheck (i) {
   console.log(i);
   if (toAdd.indexOf(i) > -1){
@@ -120,12 +110,7 @@ function handleCheck (i) {
   
 }
 
-
-
-const testChecks = () => {
-  console.log(toAdd);
-}
-
+//Http request to send checked items to plan
 const sendToPlan = () => {
   Axios.post('http://3.219.93.142:8000/api/week_meals', {net_id: ReactSession.get("net_id"), item_list: toAdd,}).then((response) => {
    console.log(response);
@@ -133,6 +118,7 @@ const sendToPlan = () => {
   
  }
  
+//Run get menu on page load
 useEffect(() => {
   getMenu()
   console.log('Menu in')
@@ -164,18 +150,8 @@ useEffect(() => {
 
 <AppBar className='bar' position="static">
 <Toolbar>
-<h2 sx={{padding:5, margin: 5}}>
-        &nbsp; &nbsp;
-        Menu Items
-      </h2>
-      <Button sx={{
-        color: 'white',
-    ':hover': {
-      bgcolor: '#ffc6c4',
-      color: 'white',
-    },
-    marginLeft: 5
-  }} onClick={sendToPlan}>Add to Plan</Button>
+<h2 sx={{padding:5, margin: 5}}> &nbsp; &nbsp; Menu Items </h2>
+      <Button sx={{ color: 'white', ':hover': { bgcolor: '#ffc6c4', color: 'white', }, marginLeft: 5 }} onClick={sendToPlan}>Add to Plan</Button>
      
 </Toolbar>
   </AppBar>
@@ -208,21 +184,11 @@ useEffect(() => {
               return(
                 <TableRow
                     key={menuItem.item_name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <TableCell padding="checkbox">
-
-                     
-                    <Checkbox
-                      
-                      color="primary"
-                      onChange={() => handleCheck(menuItem.item_id)}
-                    />
+                      <Checkbox color="primary" onChange={() => handleCheck(menuItem.item_id)}/>
                     </TableCell>
-                    <TableCell>
-                      {menuItem.item_name}
-                    </TableCell>
-        
+                    <TableCell>{menuItem.item_name}</TableCell>     
               <TableCell> {menuItem.calories}</TableCell>
               <TableCell> {menuItem.fat}</TableCell>
               <TableCell> {menuItem.sat_fat}</TableCell>
@@ -241,10 +207,6 @@ useEffect(() => {
         </Table>
       </TableContainer>
       </Paper>
-
-
-
-
 
 </ThemeProvider>
   

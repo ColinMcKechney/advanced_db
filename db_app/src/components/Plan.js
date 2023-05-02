@@ -22,11 +22,12 @@ const theme = createTheme({
       },
 
     },
-  });
+});
 
 function MyPlan() {
 
-    const navigate = useNavigate();
+  //Navigation functions
+  const navigate = useNavigate();
 
 	const Home = () => {
         navigate('/Plan');
@@ -36,16 +37,15 @@ function MyPlan() {
   }
   const Past = () => {
    navigate('/Past');
-}
-const navigateLogin = () => {
+  }
+  const navigateLogin = () => {
     navigate('/');
-}
+  }
 
-const logout = () => {
+  const logout = () => {
     ReactSession.set("net_id", "");
     navigateLogin();
-
-}
+  }
 
 const Log = () => {
   navigate('/LogMeals')
@@ -70,7 +70,7 @@ function getLastSunday() {
   return new Date(newDate);
 }
 
-//get the start of each week and reformat to Oracle date type
+//get the Sunday of each week and reformat to Oracle date type
 function weekStart(){
   
   var date_str = getLastSunday();
@@ -84,9 +84,10 @@ function weekStart(){
   return db_date;
 }
 
+//Get netid session variable
 const net_id = ReactSession.get("net_id");
 
-//to set nutritional goal for the week
+//To set nutritional goal for the week
 const [goalInput, setGoalInput] = useState({
       total_cal: 0,
       total_fat: 0,
@@ -102,15 +103,19 @@ const [goalInput, setGoalInput] = useState({
     }
 );
 
+//Variable to hold the goal input from the form
 const{total_cal, total_fat, total_sat_fat, total_trans_fat, total_carbs, total_fiber, 
   total_sugar, total_protein, total_sodium, total_potassium, total_cholesterol} = goalInput
 
+//Change handler for form submit to send the goal info to the server
 const changeGoalHandler = evt =>{
   setGoalInput({...goalInput, [evt.target.name]: [evt.target.value] })
 }
 
+//Variable to hold the success state of submit
 const [success, setSuccess] = useState("");
 
+//Sends http request to submit goal
 const submitGoalHandler = evt => {
   evt.preventDefault();
   console.log(goalInput)
@@ -138,111 +143,6 @@ const submitGoalHandler = evt => {
     setSuccess('Plan saved!');
 };
 
-//to find a food item from an on campus location to your weekly journal
-const [keyword, setKeyword] = useState({
-  search_term:""
-})
-
-const [searchItems, setSearchItems] = useState([{}]);
-
-const{search_term} = keyword
-
-const removeItem = (index) => {
-  setSearchItems([
-             ...searchItems.slice(0, index),
-             ...searchItems.slice(index + 1)
-  ]);
-
-}
-
-function handleCheck (i) {
-  console.log(i);
-  if (searchItems.indexOf(i) > -1){
-    //get index and delete
-    var index = searchItems.indexOf(i)
-    removeItem(index);
-    console.log(`removed ${i}`);
-    
-  }
-
-  else{
-    setSearchItems(searchItems => [...searchItems, i]);
-    console.log(`added ${i}`);
-  }
-  
-}
-
-
-const changeSearchHandler = evt => {
-  setKeyword({ ...keyword, [evt.target.name]: [evt.target.value] })
-}
-
-const submitSearchHandler = evt => {
-  evt.preventDefault();
-  console.log(search_term)
-  console.log(net_id)
-  Axios.post("http://3.219.93.142:8000/api/menu_search",
-    {
-      search_term:search_term[0]
-    }).then((response) => {
-      console.log(response);
-      console.log(response.status);
-      console.log(response.data);
-      setSearchItems(response.data);
-    })
-};
-
-
-//to add an off campus food item or meal to your weekly journal
-  const [offCampusInput, setOffCampusInput] = useState({
-    item_name:"",
-    amount: 0,
-    calories: 0,
-    fat_g: 0,
-    sat_fat_g: 0,
-    trans_fat_g: 0,
-    carbs_g: 0,
-    fiber_g: 0,
-    sugar_g: 0,
-    protein_g: 0,
-    sodium_mg: 0,
-    potassium_mg: 0,
-    cholesterol_mg: 0,
-  }
-  );
-
-  const {item_name, amount, calories, fat_g, sat_fat_g, trans_fat_g, carbs_g, fiber_g,sugar_g, protein_g,
-    sodium_mg, potassium_mg, cholesterol_mg} = offCampusInput
-
-  const changeOffCampusHandler = evt => {
-    setOffCampusInput({ ...offCampusInput, [evt.target.name]: [evt.target.value] })
-  }
-
-  const submitOffCampusHandler = evt => {
-    evt.preventDefault();
-    console.log(offCampusInput)
-    console.log(net_id)
-    Axios.post("http://3.219.93.142:8000/api/week_plan",
-      {
-        net_id: net_id,
-        item_name: item_name[0],
-        amount: Number(amount[0]),
-        calories: Number(calories[0]),
-        fat_g: Number(fat_g[0]),
-        sat_fat_g: Number(sat_fat_g[0]),
-        trans_fat_g: Number(trans_fat_g[0]),
-        carbs_g: Number(carbs_g[0]),
-        fiber_g: Number(fiber_g[0]),
-        sugar_g: Number(sugar_g[0]),
-        protein_g: Number(protein_g[0]),
-        sodium_mg: Number(sodium_mg[0]),
-        potassium_mg: Number(potassium_mg[0]),
-        cholesterol_mg: Number(cholesterol_mg[0])
-      }).then((response) => {
-        console.log(response);
-        console.log(response.status);
-      })
-  };
 
   useEffect(() => {
     displayWeek()

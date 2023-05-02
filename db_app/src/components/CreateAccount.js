@@ -27,12 +27,14 @@ const theme = createTheme({
 
 function CreateAccount() {
 
-    const navigate = useNavigate();
+  //Navigate to login
+  const navigate = useNavigate();
 
 	const navigateLogin = () => {
 		 navigate('/');
 	}
 
+  //State variable for account data
   const [data,setData] = useState({
     net_id:"",
     password:"",
@@ -40,22 +42,22 @@ function CreateAccount() {
     last_name:"",
   })
   
+  //Variable for account data
   const {net_id, password, first_name, last_name} = data;
   
+  //Change handler for form
   const changeHandler = e => {
     setData({...data,[e.target.name]:[e.target.value]});
   }
   
+  //Submit handler for form
   const submitHandler = e => {
     e.preventDefault();
-    console.log(data);
-    console.log(net_id[0])
-    console.log(password[0])
-    console.log(first_name[0])
-    console.log(last_name[0])
     createAccount();
+    navigateLogin();
   }
  
+  //Sends post request with account credentials to server
   const createAccount = () => {
     Axios.post("http://3.219.93.142:8000/api/signup", {net_id: net_id[0], password: password[0], first_name: first_name[0], last_name: last_name[0]}).then((response) => {
        console.log(response);
