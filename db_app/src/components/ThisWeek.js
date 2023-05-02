@@ -178,7 +178,7 @@ const net_id = ReactSession.get("net_id");
     //Send sums to results if it is Saturday
     const sendResults = () => {
       var day = planDay();
-      if (day === 7):
+      if (day === 7){
         Axios.post('http://3.219.93.142:8000/api/results', 
         {
           net_id: ReactSession.get("net_id"), 
@@ -198,6 +198,7 @@ const net_id = ReactSession.get("net_id");
         console.log(response);
       });
   }
+}
 
 
 
