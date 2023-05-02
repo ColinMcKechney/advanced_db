@@ -6,19 +6,19 @@ use crate::config::{ORACLE_PASS, ORACLE_USER, ORACLE_CON_STR};
 
 #[derive(Deserialize, Serialize, Debug, Default)]
 pub struct PlanData{
-    net_id: String,
-    week_date: String,
-    total_cal: Option<f32>,
-    total_fat: Option<f32>,
-    total_sat_fat: Option<f32>,
-    total_trans_fat: Option<f32>,
-    total_carbs: Option<f32>,
-    total_fiber: Option<f32>,
-    total_sugar: Option<f32>,
-    total_protein: Option<f32>,
-    total_sodium: Option<f32>,
-    total_potassium: Option<f32>,
-    total_cholesterol: Option<f32>
+   pub net_id: String,
+   pub week_date: String,
+   pub total_cal: Option<f32>,
+   pub total_fat: Option<f32>,
+   pub total_sat_fat: Option<f32>,
+   pub total_trans_fat: Option<f32>,
+   pub total_carbs: Option<f32>,
+   pub total_fiber: Option<f32>,
+   pub total_sugar: Option<f32>,
+   pub total_protein: Option<f32>,
+   pub total_sodium: Option<f32>,
+   pub total_potassium: Option<f32>,
+   pub total_cholesterol: Option<f32>
 }
 
 pub async fn plan(body: Json<PlanData>) -> impl Responder {
