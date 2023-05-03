@@ -197,7 +197,9 @@ const net_id = ReactSession.get("net_id");
           ).then((response) => {
         console.log(response);
       });
+      console.log("results sent");
   }
+
 }
 
 
@@ -314,6 +316,8 @@ const net_id = ReactSession.get("net_id");
             setColors()
             console.log('Colors set')
             console.log(planDay())
+            sendResults()
+      
           }, []);
        
   
