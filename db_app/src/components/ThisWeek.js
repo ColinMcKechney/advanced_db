@@ -175,6 +175,36 @@ const net_id = ReactSession.get("net_id");
        });
     }
 
+    //Send sums to results if it is Saturday
+    const sendResults = () => {
+      var day = planDay();
+      if (day === 7){
+        Axios.post('http://3.219.93.142:8000/api/results', 
+        {
+          net_id: ReactSession.get("net_id"), 
+          week_date: weekStart(),
+          total_cal: Number(sum.total_cal),
+          total_fat: Number(sum.total_fat),
+          total_sat_fat: Number(sum.total_sat_fat),
+          total_trans_fat: Number(sum.total_trans_fat),
+          total_carbs: Number(sum.total_carbs),
+          total_fiber: Number(sum.total_fiber),
+          total_sugar: Number(sum.total_sugar),
+          total_protein: Number(sum.total_protein),
+          total_sodium: Number(sum.total_sodium),
+          total_potassium: Number(sum.total_potassium),
+          total_cholesterol: Number(sum.total_cholesterol),}
+          ).then((response) => {
+        console.log(response);
+      });
+      console.log("results sent");
+  }
+
+}
+
+
+
+
 
     //Set color variables for chips      
     const [cals, setCals] = useState(false);
@@ -286,6 +316,8 @@ const net_id = ReactSession.get("net_id");
             setColors()
             console.log('Colors set')
             console.log(planDay())
+            sendResults()
+      
           }, []);
        
   

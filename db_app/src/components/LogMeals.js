@@ -133,6 +133,7 @@ const changeSearchHandler = evt => {
 
 const submitSearchHandler = evt => {
   evt.preventDefault();
+  setSearchItems([]);
   console.log(search_term)
   console.log(net_id)
   Axios.post("http://3.219.93.142:8000/api/menu_search",
@@ -312,7 +313,7 @@ color: 'main',
                     />
                     </TableCell>
         
-              <TableCell> {searchitem.eatery_id}</TableCell>
+              <TableCell> {searchitem.eatery_name}</TableCell>
               <TableCell> {searchitem.item_name}</TableCell>
               <TableCell> {searchitem.serving_size}</TableCell>
             </TableRow>
