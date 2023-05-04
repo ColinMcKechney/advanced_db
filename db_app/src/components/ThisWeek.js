@@ -142,7 +142,7 @@ const net_id = ReactSession.get("net_id");
            
           }
 
-          const [toDelete, setToDelete] = useState([]);
+          const [toDelete, setToDelete] = useState([{}]);
 
           const removeItem = (index) => {
             setToDelete([

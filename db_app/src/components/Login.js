@@ -41,6 +41,10 @@ export function Login() {
     navigate('/Plan');
   }
 
+  const navigateProg = () => {
+    navigate('/ThisWeek');
+  }
+
   //State variable for login data
   const [data,setData] = useState({
     net_id:"",
@@ -74,7 +78,7 @@ export function Login() {
       console.log(response.status);
       if (response.status === 200){
         setSession();
-        navigateHome();
+        navigateProg();
       }
 
     });

@@ -125,17 +125,17 @@ const submitGoalHandler = evt => {
     {
       net_id: net_id,
       week_date: weekStart(),
-      total_cal: Number(total_cal[0]),
-      total_fat: Number(total_fat[0]),
-      total_sat_fat: Number(total_sat_fat[0]),
-      total_trans_fat: Number(total_trans_fat[0]),
-      total_carbs: Number(total_carbs[0]),
-      total_fiber: Number(total_fiber[0]),
-      total_sugar: Number(total_sugar[0]),
-      total_protein: Number(total_protein[0]),
-      total_sodium: Number(total_sodium[0]),
-      total_potassium: Number(total_potassium[0]),
-      total_cholesterol: Number(total_cholesterol[0])
+      total_cal: Number(total_cal[0])*7,
+      total_fat: Number(total_fat[0])*7,
+      total_sat_fat: Number(total_sat_fat[0])*7,
+      total_trans_fat: Number(total_trans_fat[0])*7,
+      total_carbs: Number(total_carbs[0])*7,
+      total_fiber: Number(total_fiber[0])*7,
+      total_sugar: Number(total_sugar[0])*7,
+      total_protein: Number(total_protein[0])*7,
+      total_sodium: Number(total_sodium[0])*7,
+      total_potassium: Number(total_potassium[0])*7,
+      total_cholesterol: Number(total_cholesterol[0])*7
     }).then((response) => {
       console.log(response);
       console.log(response.status);
