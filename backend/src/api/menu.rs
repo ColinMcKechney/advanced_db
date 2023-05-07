@@ -20,7 +20,8 @@ pub struct SearchResult {
     item_name: Option<String>,
     item_id: u32,
     eatery_id: Option<u32>,
-    serving_size: Option<String>
+    serving_size: Option<String>,
+    eatery_name: Option<String>
 }
 
 pub async fn menu_search(term: Json<SearchTerm>) -> Json<SearchResults> {
@@ -39,7 +40,7 @@ pub async fn menu_search(term: Json<SearchTerm>) -> Json<SearchResults> {
 
 fn fuzzy_search(term: &str) -> Result<SearchResults> {
     let conn = Connection::connect(ORACLE_USER,ORACLE_PASS,ORACLE_CON_STR)?;
-    let mut stmt = conn.statement(format!("select * from menu_item where item_name like '{}%'", term).as_str()).build()?;
+    let mut stmt = conn.statement(format!("select * from menu_item inner join eatery on menu_item.eatery_id = eatery.id where item_name like '%{}%'", term).as_str()).build()?;
     
     let rows = stmt.query(&[])?;
 
@@ -51,7 +52,8 @@ fn fuzzy_search(term: &str) -> Result<SearchResults> {
         item_name: row.get(0).unwrap_or(None),
         item_id: row.get(1)?,
         eatery_id: row.get(2).unwrap_or(None),
-        serving_size: row.get(3).unwrap_or(None)
+        serving_size: row.get(3).unwrap_or(None),
+        eatery_name: row.get(5).unwrap_or(None)
         });
     }
     conn.close()?;
