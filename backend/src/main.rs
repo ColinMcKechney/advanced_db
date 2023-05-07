@@ -9,7 +9,7 @@ mod api;
 mod config;
 
 static PORT: u16 = 8000;
-const ALLOWED_ORIGIN: &str = "http://localhost:8009";
+const ALLOWED_ORIGIN: &str = "http://3.219.93.142:8009";
 
 
 #[derive(Default, Debug, Serialize, Deserialize, Clone)]
