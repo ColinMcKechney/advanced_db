@@ -289,5 +289,7 @@ fn week_meal_delete(items: &MenuItems) -> Result<()> {
         stmt.execute(&[meal])?;
     }
 
+    conn.commit()?;
+    conn.close()?;
     Ok(())
 }
